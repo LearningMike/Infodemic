@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="./index.js" defer></script>
+		<link rel="stylesheet" href="./main.css" />
+		<title>Infodemic</title>
+		<link rel="icon" href="./infodemic.png" sizes="32x32">
+	</head>
+	<body>
+        <!--Player puts in their Name, Country and Chooses Avatar-->
+        <div id="intro">
+            <h3>
+                <img src="./infodemic-logo.png">
+                by Republic
+            </h3>
+            <div id="cardholder">
+                <div id="cardhole"></div>
+                <hr>
+                <div id="card">
+                    <div id="company">Fact Inc.</div>
+                    <div id="passport"></div>
+                    <form id="player">
+                        <input type="text" id="name" name="name" placeholder="Insert your Name" autofocus required autocomplete="off" autocapitalize="words"><br>
+                        <div id="role">Information Scientist</div>
+                        <input id="start" type="submit" value=" Start Game ">
+                    </form>
+                </div>
+                <div id="layer"></div>
+            </div>
+        </div>
+        <!--THE GAME-->
+		<div id="game">
+            <div id="scope">
+                <div id="notif"></div>
+                <div id="factools">
+
+                </div>
+                <div id="messages">
+
+                </div>
+            </div>
+            <div id="trends">
+                <div> Day: <div id="day">1</div></div>
+                <div> Time: <div id="clock"><span id="hour">00</span>:<span id="minutes">00</span></div></div>
+            </div>
+            <div id="play"></div>
+        </div>
+        <!--Firebase list of players and scores-->
+        <div id="leaderboard">
+
+        </div>
+	</body>
+</html>

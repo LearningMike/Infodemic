@@ -1,0 +1,128 @@
+body {
+    background-color: #000000;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #FC0000;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    background-image: url("infodemic-background.png");
+    background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 0px;
+    text-shadow: 0px 0px 2px #000000;
+}
+h3 {
+    margin: 0px;
+    padding: 3vh;
+    padding-top: 4vh;
+    padding-bottom: 3vh;
+}
+h3 img {
+    height: 15vh;
+    width: auto;
+    text-align: center;
+}
+
+#cardholder {
+    background-color: #84000077;
+    width: 45vh;
+    height: 75vh;
+    border-radius: 20px;
+    border: 1px #840000 dashed;
+    margin-left: auto;
+    margin-right: auto;
+}
+#cardhole {
+    background-color: #000000;
+    width: 9vh;
+    height: 2.5vh;
+    border-radius: 20px;
+    border: 1px #840000 dashed;
+    margin-top: 1.5vh;
+    margin-bottom: 1.5vh;
+    margin-left: auto;
+    margin-right: auto;
+}
+hr {
+    border: none;
+    border-top: 1px #840000 dashed;
+}
+#card {
+    background-color: #FC000055;
+    margin-bottom: 2vh;
+    margin-top: 1.8vh;
+    width: 42vh;
+    height: 65vh;
+    min-width: fit-content;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+
+    --s: 80px;
+    --c1: #dedede;
+    --c2: #ffffff;
+    --c3: #efefef;
+        
+    --_g: var(--c3) 0 120deg,#0000 0;
+    background:
+      conic-gradient(from -60deg at 50% calc(100%/3),var(--_g)),
+      conic-gradient(from 120deg at 50% calc(200%/3),var(--_g)),
+      conic-gradient(from  60deg at calc(200%/3),var(--c3) 60deg,var(--c2) 0 120deg,#0000 0),
+      conic-gradient(from 180deg at calc(100%/3),var(--c1) 60deg,var(--_g)),
+      linear-gradient(90deg,var(--c1)   calc(100%/6),var(--c2) 0 50%,
+                            var(--c1) 0 calc(500%/6),var(--c2) 0);
+    background-size: calc(1.732*var(--s)) var(--s);
+}
+#company {
+    padding: 2vh;
+    padding-top: 7vh;
+    padding-bottom: 4vh;
+    color: #FC000022;
+    text-shadow: 0px 0px 5px #FC000099;
+    font-size: 5vh;
+    font-weight: bold;
+}
+#passport{
+    width: 25vh;
+    height: 25vh;
+    background-color: #dedede;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+}
+#role {
+    font-size: 2vh;
+    color: #787878;
+    padding: 1vh;
+}
+input {
+    margin-top: 2vh;
+    padding: 1vh;
+    background: none;
+    border: 0;
+    border-color: #FC0000;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 3vh;
+    text-align: center;
+    cursor: pointer;
+}
+#start {
+    padding: 1vh;
+    background-color: #FC0000;
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+#layer{
+    position: relative;
+    top: -67.7vh;
+    left: 0;
+    background-color: #FC000044;
+    width: 43.5vh;
+    height: 66.5vh;
+    border-radius: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    pointer-events:none;
+    touch-action: none;
+}
