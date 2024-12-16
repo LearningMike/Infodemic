@@ -10,7 +10,7 @@
         <!--Player puts in their Name, Country and Chooses Avatar-->
         <div id="intro">
             <h3>
-                <img src="./infodemic-logo.png">
+                <img src="./infodemic-logo.png" draggable="false">
                 by Republic
             </h3>
             <div id="cardholder">
@@ -40,10 +40,14 @@
                 </div>
             </div>
             <div id="trends">
-                <div> Day: <div id="day">1</div></div>
-                <div> Time: <div id="clock"><span id="hour">00</span>:<span id="minutes">00</span></div></div>
+                <div id="clock">
+                    <div id="sol">Day<span id="days"> 1 </span></div>
+                    <div id="chrono"></span><span id="hours"> 00</span>:<span id="minutes">00</span><span id="ampm"> AM</span></div>
+                </div>
+                <hr>
+                <div id="trendlist">dsds</div>
             </div>
-            <div id="play"></div>
+            <div id="play">▶️ Play</div>
         </div>
         <!--Firebase list of players and scores-->
         <div id="leaderboard">
