@@ -132,7 +132,7 @@ input {
 #start {
     padding: 1vh;
     background-color: #FC0000;
-    color: #FFFFFF;
+    color: #000000;
     border-radius: 10px;
 }
 #layer{
@@ -166,8 +166,24 @@ input {
     bottom: 10vh;
     left: 15vh;
     width: 25vh;
-    padding: 1vh;
+    height: 8vh;
+    padding-top: 3vh;
     font-size: 3vh;
+    background-color: #000000;
+    text-shadow: 0px 0px 5px #FC000099;
+    box-shadow: 0px 0px 25px #FC000099;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#notif{
+    position: absolute;
+    text-align: center;
+    top: 5vh;
+    left: 15vh;
+    width: 20vh;
+    height: 4vh;
+    padding-top: 1vh;
+    font-size: 2vh;
     background-color: #000000;
     text-shadow: 0px 0px 5px #FC000099;
     box-shadow: 0px 0px 25px #FC000099;
@@ -211,4 +227,61 @@ input {
 }
 #chrono {
     width: 10vw;
+}
+.trenditem {
+    display: flex;
+    width: 24vw;
+    padding: 2vh;
+    text-align: left;
+    cursor: pointer;
+}
+.trenditem:hover {
+    background-color: #FC000022;
+}
+.trendname {
+    width: 20vw;
+    padding-left: 2vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}
+.trendspeed {
+    width: 4vw;
+}
+#messages {
+    display: none;
+    padding: 5vh;
+    padding-top: 10vh;
+    color: #FC000099;
+}
+#factools {
+    display: none;
+    padding: 5vh;
+    padding-top: 10vh;
+    color: #FC000099;
+    margin-left: auto;
+    margin-right: auto;
+}
+.button {
+    color: #FC0000;
+    text-align: center;
+    width: fit-content;
+    margin: 2vh;
+    margin-left: 10vh;
+    margin-right: 10vh;
+    padding: 2vh;
+    font-size: 3vh;
+    background-color: #000000;
+    text-shadow: 0px 0px 5px #FC000099;
+    box-shadow: 0px 0px 25px #FC000099;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#tactions {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+#tresult {
+    padding: 2vh;
+    padding-top: 5vh;
 }

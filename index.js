@@ -11,8 +11,11 @@ document.getElementById("player").addEventListener("submit", (event) => {
     let hours = 0;
     let minutes = 0;
     let points = 0;
+    let funding = 950;
     let time = 0;
     let tickdelta = 0;
+    let seenTrends = [];
+    let currentTrends = [];
     
     document.getElementById("play").addEventListener("mousedown", (event) => {
         if (pause){
@@ -25,6 +28,174 @@ document.getElementById("player").addEventListener("submit", (event) => {
             document.getElementById("play").innerText = "▶️ Play";
         }
     });
+
+    document.getElementById("notif").addEventListener("mousedown", (event) => {
+        pause = true;
+        document.getElementById("play").innerText = "▶️ Play";
+        document.getElementById("factools").style.display = "none";
+        document.getElementById("messages").style.display = "block";
+    });
+
+    document.getElementById("factgpt").addEventListener("mousedown", (event) => {
+        if (pause){
+            pause = false;
+            document.getElementById("play").innerText = "⏸️ Pause";
+            time = performance.timeOrigin + performance.now();
+            window.requestAnimationFrame(tick);
+        }
+        let die = Math.floor(1+Math.random()*2);
+        if (die<2){
+            let tid = document.getElementById("tactions").getAttribute("class").substring(2);
+            if (trendpool[tid]["Factual"] == 0){
+                document.getElementById("tresult").innerText = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is Not Factual. But as an AI Language Model, I Cannot Predict Future Events Or Trends.";
+            } else if (trendpool[tid]["Factual"] == 1){
+                document.getElementById("tresult").innerText = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is Factual. But as an AI Language Model, I Cannot Predict Future Events Or Trends.";
+            } else {
+                document.getElementById("tresult").innerText = "FactGPT: As an AI Language Model, I cannot determine if this trend is factual or harmful.";
+            }
+        } else {
+            let tid = document.getElementById("tactions").getAttribute("class").substring(2);
+            let dieai = Math.floor(1+Math.random()*3);
+            if (dieai == 1){
+                document.getElementById("tresult").innerText = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is Factual. But as an AI Language Model, I Cannot Predict Future Events Or Trends.";
+            } else if (dieai == 2) {
+                document.getElementById("tresult").innerText = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is Not Factual. But as an AI Language Model, I Cannot Predict Future Events Or Trends.";
+            } else {
+                document.getElementById("tresult").innerText = "FactGPT: As an AI Language Model, I cannot ascertain if a trend is factual or harmful.";
+            }
+        }
+        funding = funding - 1;
+        document.getElementById("notif").innerText = "🏦 " + funding + "k ✉️ 0";
+    });
+
+    document.getElementById("factcheck").addEventListener("mousedown", (event) => {
+        if (pause){
+            pause = false;
+            document.getElementById("play").innerText = "⏸️ Pause";
+            time = performance.timeOrigin + performance.now();
+            window.requestAnimationFrame(tick);
+        }
+        let tid = document.getElementById("tactions").getAttribute("class").substring(2);
+        if (trendpool[tid]["Factual"] == 0){
+            if (trendpool[tid]["Damage"] > 1){
+                let adj = "";
+                if (trendpool[tid]["Damage"] < 4) {
+                    adj = "somewhat";
+                } else if (trendpool[tid]["Damage"] < 7) {
+                    adj = "";
+                } else if (trendpool[tid]["Damage"] < 9){
+                    adj = "very";
+                } else {
+                    adj = "extremely";
+                }
+                document.getElementById("tresult").innerText = "This '" + trendpool[tid]["Name"] + "' Trend is Not Factual. And we think could be " + adj + " Harmful.";
+            } else {
+                document.getElementById("tresult").innerText = "This '" + trendpool[tid]["Name"] + "' Trend is Not Factual. But we see no reason to suggest that it would cause any Harm.";
+            }
+        } else if (trendpool[tid]["Factual"] == 1){
+            document.getElementById("tresult").innerText = "The details of this '" + trendpool[tid]["Name"] + "' Trend are Confirmed to be Factual.";
+        } else {
+            document.getElementById("tresult").innerText = "Trends like '" + trendpool[tid]["Name"] + "' do not imply anything that could be fact or fiction";
+        }
+        if (hours < 18){
+            hours = hours+6;
+            if (hours < 13){
+                document.getElementById("hours").innerText = " " +hours;
+                if (hours == 12){
+                    document.getElementById("ampm").innerText = " PM";
+                } else {
+                    document.getElementById("ampm").innerText = " AM";
+                }
+            } else {
+                document.getElementById("hours").innerText = " " + (hours-12);
+                if ((hours-12) == 12){
+                    document.getElementById("ampm").innerText = " AM";
+                } else {
+                    document.getElementById("ampm").innerText = " PM";
+                }
+            }
+        } else {
+            hours = 0 + (6-(24-hours));
+            minutes = 0;
+            days = days + 1;
+            document.getElementById("days").innerText = " " + days + " ";
+        }
+
+        funding = funding - 10;
+        document.getElementById("notif").innerText = "🏦 " + funding + "k ✉️ 0";
+    });
+
+    document.getElementById("factcheque").addEventListener("mousedown", (event) => {
+        if (pause){
+            pause = false;
+            document.getElementById("play").innerText = "⏸️ Pause";
+            document.getElementById("factools").style.display = "none";
+            document.getElementById("messages").style.display = "block";
+            time = performance.timeOrigin + performance.now();
+            window.requestAnimationFrame(tick);
+        }
+        let tid = document.getElementById("tactions").getAttribute("class").substring(2);
+        let eng = trendpool[tid]["Engagement"];
+        let adcost = 0.1 * eng;
+        funding = funding - Math.floor(adcost);
+        document.getElementById("notif").innerText = "🏦 " + funding + "k ✉️ 0";
+        if (trendpool[tid]["R0"] > 0){
+            trendpool[tid]["R0"] = 0 - trendpool[tid]["R0"];
+        }
+    });
+
+    const trendtutorial = () => {
+        document.getElementById("trendlist").innerHTML = "";
+        for (let i=0; i<6; i++){
+            const trend = {
+                "id" : i,
+                "en" : trendpool[i]["Engagement"]
+            };
+            currentTrends.push(trend);
+        }
+
+        currentTrends.sort( (p1, p2) => {
+            if (p1["Engagement"] < p2["Engagement"]) return -1;
+            if (p1["Engagement"] > p2["Engagement"]) return 1;
+            return 0;
+        });
+
+        for (let i=0; i<currentTrends.length; i++){
+            let trendid = currentTrends[i]["id"];
+            let trenditem = document.createElement("div");
+            trenditem.setAttribute("class", "trenditem");
+			trenditem.setAttribute("id", "t_"+trendid);
+            let trendname = document.createElement("div");
+            trendname.setAttribute("class", "trendname");
+            trendname.innerText = trendpool[trendid]["Name"];
+            trenditem.append(trendname);
+            let trendspeed = document.createElement("div");
+            trendspeed.setAttribute("class", "trendspeed");
+            trendspeed.innerText = trendpool[trendid]["R0"] + "⚡";
+            trenditem.append(trendspeed);
+            document.getElementById("trendlist").append(trenditem);
+			document.getElementById("t_"+trendid).addEventListener("click", (e) => {
+                let tid = e.currentTarget.id.substring(2);
+                pause = true;
+                document.getElementById("play").innerText = "▶️ Play";
+                document.getElementById("factools").style.display = "block";
+                document.getElementById("messages").style.display = "none";
+                document.getElementById("tname").innerText = "Trending: " + trendpool[tid]["Name"];
+                document.getElementById("tspeed").innerText = "R0: " + trendpool[tid]["R0"];
+                document.getElementById("tsummary").innerText = trendpool[tid]["Summary"];
+                document.getElementById("tactions").setAttribute("class", "t_"+tid);
+                document.getElementById("tresult").innerText = "";
+			});
+        }
+    }
+
+    const trendhours = () => {
+
+    }
+
+    const trendqday = () => {
+
+    }
 
     const tick = (timelapse) => {
         tickdelta = (performance.timeOrigin + timelapse) - time;
@@ -159,4 +330,5 @@ document.getElementById("player").addEventListener("submit", (event) => {
           "Damage Summary": ""
         }
     ];
+    trendtutorial();
 });
