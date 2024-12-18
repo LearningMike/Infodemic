@@ -165,9 +165,9 @@ input {
     text-align: center;
     bottom: 10vh;
     left: 15vh;
-    width: 25vh;
+    width: 20vh;
     height: 8vh;
-    padding-top: 3vh;
+    padding-top: 4vh;
     font-size: 3vh;
     background-color: #000000;
     text-shadow: 0px 0px 5px #FC000099;
@@ -181,8 +181,8 @@ input {
     top: 5vh;
     left: 15vh;
     width: 20vh;
-    height: 4vh;
-    padding-top: 1vh;
+    height: 5vh;
+    padding-top: 1.5vh;
     font-size: 2vh;
     background-color: #000000;
     text-shadow: 0px 0px 5px #FC000099;
@@ -229,11 +229,13 @@ input {
     width: 10vw;
 }
 .trenditem {
+    font-size: 14px;
     display: flex;
     width: 24vw;
     padding: 2vh;
     text-align: left;
     cursor: pointer;
+    border-bottom: 1px #FC000044 dashed;
 }
 .trenditem:hover {
     background-color: #FC000022;
@@ -248,7 +250,7 @@ input {
     width: 4vw;
 }
 #messages {
-    display: none;
+    display: block;
     padding: 5vh;
     padding-top: 10vh;
     color: #FC000099;
