@@ -4,32 +4,36 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta name="description" content="Infodemic by Republic (Michael Abia) for GameUp Africa Game Jam For Democracy 2024">
-		<script type="text/javascript" src="./index.js" defer></script>
+		<script type="module" src="./index.js" defer></script>
 		<link rel="stylesheet" href="./main.css" />
 		<title>Infodemic</title>
 		<link rel="icon" href="./infodemic.png" sizes="32x32">
 	</head>
 	<body>
-        <!--Player puts in their Name, Country and Chooses Avatar-->
+        <!--Player puts in their Name, Country, Role and Chooses Avatar-->
         <div id="intro">
-            <h3>
+            <h3 id="share">
                 <img src="./infodemic-logo.png" draggable="false">
-                by Republic
             </h3>
             <div id="cardholder">
                 <div id="cardhole"></div>
                 <hr>
                 <div id="card">
                     <div id="company">Fact Inc.</div>
-                    <div id="passport"></div>
+                    <div id="country">&#127475;&#127468;</div>
+                    <div id="passport" draggable="false">👨🏿</div>
                     <form id="player">
-                        <input type="text" id="name" name="name" placeholder="Insert your Name" autofocus required autocomplete="off" autocapitalize="words"><br>
+                        <input type="text" id="name" name="name" placeholder="Insert your Name" maxlength="22" autofocus required autocomplete="off" autocapitalize="words"><br>
                         <div id="role">Information Scientist</div>
                         <input id="start" type="submit" value=" Start Game ">
                     </form>
                 </div>
                 <div id="layer"></div>
             </div>
+            <div id="toplayers"></div>
+            <div id="changeavatar">Face<span class="change">🔄️</span></div>
+            <div id="changecountry">Country<span class="change">🔄️</span></div>
+            <h5 id="ldr">Democracy Game Jam Leaderboard</h3>
         </div>
         <!--THE GAME-->
 		<div id="game">
@@ -72,9 +76,32 @@
             </div>
             <div id="play">▶️ Play</div>
         </div>
-        <!--Firebase list of players and scores-->
+        <!--Score, Feedback, some leaderboard replay and share buttons-->
         <div id="end">
+            <div id="score">
 
+            </div>
+            <hr>
+            <div id="Feedback">
+
+            </div>
+            <hr>
+            <div id="leaderboards">
+                <div id="topthree">
+
+                </div>
+                <div id="thee">
+
+                </div>
+                <div id="bottomthree">
+
+                </div>
+            </div>
+            you can replay to improve your score or share to friends!
+            <div id="endaction">
+                <div id="replay">Replay 🔃</div>
+                <div id="sharend">Share 📢</div>
+            </div>
         </div>
 	</body>
 </html>

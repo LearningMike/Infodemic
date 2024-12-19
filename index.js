@@ -1,8 +1,161 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getDatabase, ref, set, query, onValue, orderByChild, limitToFirst, limitToLast } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB6lWdy9Xx7LTwgQCMY6V7cwTdlUDE5NOA",
+    authDomain: "gameupjam.firebaseapp.com",
+    databaseURL: "https://gameupjam-default-rtdb.firebaseio.com",
+    projectId: "gameupjam",
+    storageBucket: "gameupjam.firebasestorage.app",
+    messagingSenderId: "956331264348",
+    appId: "1:956331264348:web:9869ee360978e74a825999"
+};
+
+const defaultProject = initializeApp(firebaseConfig);
+const defaultAuth = getAuth(defaultProject);
+const defaultData = getDatabase(defaultProject);
+
+const shareData = {
+    title: "Infodemic",
+    text: "Share Infodemic to a Friend!",
+    url: "https://learningmike.itch.io/infodemic",
+};
+  
+const ind = document.getElementById("share");
+  
+ind.addEventListener("click", async () => {
+    try {
+        await navigator.share(shareData);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+const avatars = [
+    "👨🏾",
+    "👩🏾",
+    "👦🏾",
+    "👧🏾",
+    "👨🏿",
+    "👩🏿",
+    "👦🏿",
+    "👧🏿",
+    "👨🏽",
+    "👩🏽",
+    "👦🏽",
+    "👧🏽",
+];
+let avatarindex = 0;
+
+document.getElementById("changeavatar").addEventListener("mousedown", (event) => {
+    if ((avatarindex+1) > 11){
+        avatarindex = 0;
+        document.getElementById("passport").innerText = avatars[avatarindex];
+    } else{
+        avatarindex = avatarindex + 1;
+        document.getElementById("passport").innerText = avatars[avatarindex];
+    }
+});
+
+const countries = [
+    "🇳🇬",
+    "🇰🇪",
+    "🇬🇭",
+    "🏴‍☠️"
+]
+let countryindex = 0;
+
+document.getElementById("changecountry").addEventListener("mousedown", (event) => {
+    if ((countryindex+1) > 3){
+        countryindex = 0;
+        document.getElementById("country").innerText = countries[countryindex];
+    } else{
+        countryindex = countryindex + 1;
+        document.getElementById("country").innerText = countries[countryindex];
+    }
+});
+
+const role = [
+    "Information Scientist",
+    "Information Strategist",
+    "Information Specialist"
+];
+
+signInAnonymously(defaultAuth).then(() => {
+    // Signed in..
+    console.log("Signed In Successfully");
+}).catch((error) => {
+    let errorCode = error.code;
+    let errorMessage = error.message;
+});
+onAuthStateChanged(defaultAuth, (user) => {
+    if (user) {
+        if (user.displayName != null){
+            document.getElementById("name").value= user.displayName;
+            if (user.photoURL != null){
+                let avantry = user.photoURL.split("_");
+                document.getElementById("passport").innerText = avatars[parseInt(avantry[0])];
+                document.getElementById("country").innerText = countries[parseInt(avantry[1])];
+                avatarindex = parseInt(avantry[0]);
+                countryindex = parseInt(avantry[1]);
+            }
+        }
+    } else {
+        // Signed out..
+    }
+});
+
+let rank = 6;
+let tpquery = query(ref(defaultData, "/"), orderByChild('points'), limitToLast(6));
+onValue(tpquery, (snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+        var childKey = childSnapshot.key;
+        var childData = childSnapshot.val();
+
+        let ldbp = document.createElement("div");
+        ldbp.setAttribute("class", "ldbplayer");
+        let ldbprank = document.createElement("span");
+        ldbprank.innerText = rank + " | ";
+        ldbp.append(ldbprank);
+        rank = rank - 1;
+        let ldbpavt = document.createElement("span");
+        ldbpavt.setAttribute("class", "ldbdhead");
+        ldbpavt.innerText = avatars[childData.avatar];
+        ldbp.append(ldbpavt);
+        let ldbpname = document.createElement("span");
+        ldbpname.setAttribute("class", "ldbdname");
+        ldbpname.innerText = childData.name;
+        ldbp.append(ldbpname);
+        let ldbpscore = document.createElement("span");
+        ldbpscore.setAttribute("class", "ldbdscore");
+        ldbpscore.innerText = childData.points + " ₧";
+        ldbp.append(ldbpscore);
+        let ldbpcn = document.createElement("span");
+        ldbpcn.setAttribute("class", "ldbdflag");
+        ldbpcn.innerText = countries[childData.country];
+        ldbp.append(ldbpcn);
+        document.getElementById("toplayers").prepend(ldbp);
+    }, {
+        onlyOnce: true
+    });
+}, (err) => {
+    // error callback is not called
+});
+
 document.getElementById("player").addEventListener("submit", (event) => {
     event.preventDefault();
 
     //console.log(JSON.stringify(event.currentTarget.elements));
-    const name = document.getElementById("name");
+    const name = document.getElementById("name").value;
+
+    if (defaultAuth.currentUser.isAnonymous){
+        updateProfile(defaultAuth.currentUser, {
+            displayName: name,
+            photoURL: avatarindex+"_"+countryindex
+        });
+    }
+
     document.getElementById("intro").style.display = "none";
     document.getElementById("game").style.display = "flex";
 
@@ -277,7 +430,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         if (trendpool[removed["id"]]["Harm"] > 1){
             if ((trendpool[removed["id"]]["Damage"] - trendpool[removed["id"]]["Harm"]) > 0 ){
                 seenTrends.push(removed);
-                points = points + (trendpool[removed["id"]]["Damage"] - trendpool[removed["id"]]["Harm"]);
+                points = points + ((trendpool[removed["id"]]["Damage"] - trendpool[removed["id"]]["Harm"])*Math.abs(trendpool[removed["id"]]["R0"]));
             }
 
             if (trendpool[removed["id"]]["Harm"] > 6){
@@ -307,7 +460,6 @@ document.getElementById("player").addEventListener("submit", (event) => {
     }
 
     const tick = (timelapse) => {
-        tickdelta = (performance.timeOrigin + timelapse) - time;
         time = performance.timeOrigin + timelapse;
 
         if (!pause){
@@ -356,13 +508,126 @@ document.getElementById("player").addEventListener("submit", (event) => {
     };
 
     const endgame = (trendcaused) => {
+        set(ref(defaultData, defaultAuth.currentUser.uid), {
+            name: name,
+            country: countryindex,
+            avatar : avatarindex,
+            points: points
+        }, (error) => {
+            if (error) {
+                // The write failed...
+                console.log(error);
+            } else {
+                /**
+                let rank = 3;
+                let tpquery = query(ref(defaultData, "/"), orderByChild('points'), limitToLast(3));
+                onValue(tpquery, (snapshot) => {
+                    snapshot.forEach((childSnapshot) => {
+                        var childKey = childSnapshot.key;
+                        var childData = childSnapshot.val();
+
+                        let ldbp = document.createElement("div");
+                        ldbp.setAttribute("class", "ldbplayer");
+                        let ldbprank = document.createElement("span");
+                        ldbprank.innerText = rank + " | ";
+                        ldbp.append(ldbprank);
+                        rank = rank - 1;
+                        let ldbpavt = document.createElement("span");
+                        ldbpavt.setAttribute("class", "ldbdhead");
+                        ldbpavt.innerText = avatars[childData.avatar];
+                        ldbp.append(ldbpavt);
+                        let ldbpname = document.createElement("span");
+                        ldbpname.setAttribute("class", "ldbdname");
+                        ldbpname.innerText = childData.name;
+                        ldbp.append(ldbpname);
+                        let ldbpscore = document.createElement("span");
+                        ldbpscore.setAttribute("class", "ldbdscore");
+                        ldbpscore.innerText = childData.points + " ₧";
+                        ldbp.append(ldbpscore);
+                        let ldbpcn = document.createElement("span");
+                        ldbpcn.setAttribute("class", "ldbdflag");
+                        ldbpcn.innerText = countries[childData.country];
+                        ldbp.append(ldbpcn);
+                        document.getElementById("toplayers").prepend(ldbp);
+                    }, {
+                        onlyOnce: true
+                    });
+                }, (err) => {
+                    // error callback is not called
+                });
+
+                let ldbp = document.createElement("div");
+                ldbp.setAttribute("class", "ldbplayer");
+                let ldbprank = document.createElement("span");
+                ldbprank.innerText = rank + " | ";
+                ldbp.append(ldbprank);
+                rank = rank - 1;
+                let ldbpavt = document.createElement("span");
+                ldbpavt.setAttribute("class", "ldbdhead");
+                ldbpavt.innerText = avatars[childData.avatar];
+                ldbp.append(ldbpavt);
+                let ldbpname = document.createElement("span");
+                ldbpname.setAttribute("class", "ldbdname");
+                ldbpname.innerText = childData.name;
+                ldbp.append(ldbpname);
+                let ldbpscore = document.createElement("span");
+                ldbpscore.setAttribute("class", "ldbdscore");
+                ldbpscore.innerText = childData.points + " ₧";
+                ldbp.append(ldbpscore);
+                let ldbpcn = document.createElement("span");
+                ldbpcn.setAttribute("class", "ldbdflag");
+                ldbpcn.innerText = countries[childData.country];
+                ldbp.append(ldbpcn);
+                document.getElementById("toplayers").prepend(ldbp);
+                
+                let rank = 3;
+                let tpquery = query(ref(defaultData, "/"), orderByChild('points'), limitToLast(6));
+                onValue(tpquery, (snapshot) => {
+                    snapshot.forEach((childSnapshot) => {
+                        var childKey = childSnapshot.key;
+                        var childData = childSnapshot.val();
+
+                        let ldbp = document.createElement("div");
+                        ldbp.setAttribute("class", "ldbplayer");
+                        let ldbprank = document.createElement("span");
+                        ldbprank.innerText = rank + " | ";
+                        ldbp.append(ldbprank);
+                        rank = rank - 1;
+                        let ldbpavt = document.createElement("span");
+                        ldbpavt.setAttribute("class", "ldbdhead");
+                        ldbpavt.innerText = avatars[childData.avatar];
+                        ldbp.append(ldbpavt);
+                        let ldbpname = document.createElement("span");
+                        ldbpname.setAttribute("class", "ldbdname");
+                        ldbpname.innerText = childData.name;
+                        ldbp.append(ldbpname);
+                        let ldbpscore = document.createElement("span");
+                        ldbpscore.setAttribute("class", "ldbdscore");
+                        ldbpscore.innerText = childData.points + " ₧";
+                        ldbp.append(ldbpscore);
+                        let ldbpcn = document.createElement("span");
+                        ldbpcn.setAttribute("class", "ldbdflag");
+                        ldbpcn.innerText = countries[childData.country];
+                        ldbp.append(ldbpcn);
+                        document.getElementById("toplayers").prepend(ldbp);
+                    }, {
+                        onlyOnce: true
+                    });
+                }, (err) => {
+                    // error callback is not called
+                });
+                */
+            }
+        });
         if (trendcaused){
 
         }
         pause = true;
+
         document.getElementById("game").style.display = "none";
         document.getElementById("end").style.display = "block";
     }
+
 
     let trendpool = [
         {
