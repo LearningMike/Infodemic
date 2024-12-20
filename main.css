@@ -127,7 +127,7 @@ hr {
     text-align: center;
     line-height: 0;
     color: #FC000022;
-    text-shadow: 0px 0px 5px #FC0000;
+    text-shadow: 0px 0px 2px #000000;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -460,6 +460,41 @@ input {
     -o-user-select: none;
     user-select: none;
 }
+#ldrhome {
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.9vw;
+    opacity: 0.6;
+    padding: 20px;
+    position: fixed;
+    right: 0;
+    top: 78vh;
+    width: 30vw;
+    height: fit-content;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+#ldrend {
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.9vw;
+    opacity: 0.6;
+    padding: 20px;
+    position: fixed;
+    top: 78vh;
+    width: 100%;
+    height: fit-content;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
 #end {
     display: none;
 }
@@ -496,11 +531,39 @@ input {
     -o-user-select: none;
     user-select: none;
 }
+#lplay {
+    width: max-content;
+    padding: 2vw;
+    position: fixed;
+    top: 2vw;
+    left: 2vw;
+    margin: 0px;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
 #sharend{
     width: max-content;
     padding: 2vw;
     position: fixed;
     right: 20vw;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+#lsharend{
+    width: max-content;
+    padding: 2vw;
+    position: fixed;
+    top: 2vw;
+    right: 2vw;
+    margin: 0px;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -522,6 +585,20 @@ input {
     text-shadow: 0px 0px 5px #FC000099;
     box-shadow: 0px 0px 25px #FC000099;
     border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#tophundred {
+    opacity: 0.8;
+    width: 80vw;
+    height: max-content;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
     margin-left: auto;
     margin-right: auto;
 }
@@ -605,4 +682,7 @@ input {
 }
 .person{
     cursor: pointer;
+}
+#fullboard {
+    display: none;
 }

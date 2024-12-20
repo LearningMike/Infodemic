@@ -22,14 +22,8 @@ const shareData = {
     text: "Share Infodemic to a Friend!",
     url: "https://learningmike.itch.io/infodemic",
 };
-  
-document.getElementById("share").addEventListener("mousedown", async () => {
-    try {
-        await navigator.share(shareData);
-    } catch (err) {
-        console.log(err);
-    }
-});
+
+
 document.getElementById("sharend").addEventListener("mousedown", async () => {
     try {
         await navigator.share(shareData);
@@ -41,6 +35,7 @@ document.getElementById("sharend").addEventListener("mousedown", async () => {
 document.getElementById("replay").addEventListener("mousedown", (event) => {
     window.location.reload();
 });
+
 
 const avatars = [
     "👨🏾",
@@ -115,9 +110,10 @@ onAuthStateChanged(defaultAuth, (user) => {
     }
 });
 
-let rank = 6;
+
 let tpquery = query(ref(defaultData, "/"), orderByChild('points'), limitToLast(6));
 onValue(tpquery, (snapshot) => {
+    let rank = 6;
     document.getElementById("toplayers").innerHTML = "";
     snapshot.forEach((childSnapshot) => {
         var childKey = childSnapshot.key;
@@ -153,6 +149,74 @@ onValue(tpquery, (snapshot) => {
     // error callback is not called
 });
 
+const fullboard = () => {
+    let tpquery = query(ref(defaultData, "/"), orderByChild('points'), limitToLast(1000));
+    onValue(tpquery, (snapshot) => {
+        let ranktop = 1;
+        let tophundred = [];
+        document.getElementById("tophundred").innerHTML = "";
+        snapshot.forEach((childSnapshot) => {
+            var childKey = childSnapshot.key;
+            var childData = childSnapshot.val();
+            tophundred.push(childSnapshot.val());
+
+        }, {
+            onlyOnce: true
+        });
+        tophundred.reverse();
+        tophundred.forEach(childData => {
+            let bldbp = document.createElement("div");
+            bldbp.setAttribute("class", "bldbplayer");
+            let bldbprank = document.createElement("span");
+            bldbprank.setAttribute("class", "bldbdprank");
+            bldbprank.innerText = ranktop + " | ";
+            bldbp.append(bldbprank);
+            ranktop = ranktop + 1;
+            let bldbpavt = document.createElement("span");
+            bldbpavt.setAttribute("class", "bldbdhead");
+            bldbpavt.innerText = avatars[childData.avatar];
+            bldbp.append(bldbpavt);
+            let bldbpname = document.createElement("span");
+            bldbpname.setAttribute("class", "bldbdname");
+            bldbpname.innerText = childData.name;
+            bldbp.append(bldbpname);
+            let bldbpscore = document.createElement("span");
+            bldbpscore.setAttribute("class", "bldbdscore");
+            bldbpscore.innerText = childData.points + " ₧";
+            bldbp.append(bldbpscore);
+            let bldbpcn = document.createElement("span");
+            bldbpcn.setAttribute("class", "bldbdflag");
+            bldbpcn.innerText = countries[childData.country];
+            bldbp.append(bldbpcn);
+            document.getElementById("tophundred").append(bldbp);
+        });
+    }, (err) => {
+        // error callback is not called
+    });
+}
+
+document.getElementById("ldrhome").addEventListener("mousedown", async () => {
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("fullboard").style.display = "block";
+    fullboard();
+});
+document.getElementById("ldrend").addEventListener("mousedown", async () => {
+    document.getElementById("end").style.display = "none";
+    document.getElementById("fullboard").style.display = "block";
+    fullboard();
+});
+document.getElementById("lsharend").addEventListener("mousedown", async () => {
+    try {
+        await navigator.share(shareData);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+document.getElementById("lplay").addEventListener("mousedown", (event) => {
+    window.location.reload();
+});
+
 document.getElementById("player").addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -160,7 +224,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
     // we're doing it LIIIIIIIVE!
     // the sound of MUSICK
     var soundevice = new (window.AudioContext || window.webkitAudioContext || window.audioContext);
-    var amplitude = 0.01;
+    var amplitude = 0.02;
     var duration = 3800;
     var instrument = "piano";
     var playnote = (note, octave, callback) => {
@@ -323,7 +387,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
 
     //console.log(JSON.stringify(event.currentTarget.elements));
     const name = document.getElementById("name").value;
-    document.getElementById("received").innerText = "Hi " + name.split(" ")[0]+". Welcome to Fact Inc! I am thrilled to have you join our mission to save lives. You read that right! Here you will see how dangerous misinf... ahem, Lies can be. Now let's get to work, press play...";
+    document.getElementById("received").innerText = "Hi " + name.split(" ")[0]+". Welcome to Fact Inc! I am thrilled to have you join our mission to save lives. You read that right! Here you will see how dangerous misinf... ahem, Lies can be. Now let's get to work, ";
     
     /**
         This is temporary since i there's no time to create a messaging system, which is essentially the narrative system of this game.
@@ -356,7 +420,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
     
     document.getElementById("play").addEventListener("mousedown", (event) => {
         if (instr == 0){
-            document.getElementById("received").innerHTML = "Time's ticking. Here's how you do it, click on the trending topics to your right and try to determine if they're factual or harmful. Use <b>FactCheque™</b>, to stop a trend. Act fast and efficiently, harmful trends could cause a lot of damage if they go unchecked.";
+            document.getElementById("received").innerHTML = "Select a trending topic to your right. Use your intuition, <b>FactGPT™</b>, and <b>FactCheck</b> to determine if they are factual or harmful. Use <b>FactCheque™</b>, to stop a trend. Act fast and efficiently, harmful trends could cause a lot of damage if they go unchecked. They also get more expensive to <b>FactCheque™</b>.";
             instr = 1;
         }
         playnote ("d", 3);
@@ -385,9 +449,9 @@ document.getElementById("player").addEventListener("submit", (event) => {
             switch (die) {
                 case 1:
                     if (avatarindex%2 == 0) {
-                        document.getElementById("received").innerText = "Oh, sorry Madam. I know i'm your CEO but can you take up some initiative. I can't believe this company can't do anything without me, haba "+ name.split(" ")[0]+".";
-                    } else {
                         document.getElementById("received").innerText = "Oh, sorry Oga. I know i'm your CEO but can you take up some initiative. I can't believe this company can't do anything without me, haba "+ name.split(" ")[0]+".";
+                    } else {
+                        document.getElementById("received").innerText = "Oh, sorry Madam. I know i'm your CEO but can you take up some initiative. I can't believe this company can't do anything without me, haba "+ name.split(" ")[0]+".";
                     }
                     break;
                 case 2:
@@ -698,7 +762,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         var gain2 = soundevice.createGain();
         oscillator2.connect(gain2);
         gain2.connect(soundevice.destination);
-        gain2.gain.value = 0.0004;
+        gain2.gain.value = 0.001;
         oscillator2.type = "sine";
         oscillator2.frequency.value = 440;
 
@@ -945,7 +1009,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted their time and electricity speculating its future value."
+            "Dsummary": "have wasted their time and electricity speculating its future value"
         },
         {
             "Name": "WAEC Result",
@@ -956,7 +1020,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 2,
             "Harm": 1,
             "Damage": 2,
-            "Dsummary": "have been emotionally distressed comparing their WAEC results with those being posted."
+            "Dsummary": "have been emotionally distressed comparing their WAEC results with those being posted"
         },
         {
             "Name": "Cucurella",
@@ -967,7 +1031,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted their time and electricity attacking or defending cucurella."
+            "Dsummary": "have wasted their time and electricity attacking or defending cucurella"
         },
         {
             "Name": "Rema",
@@ -978,7 +1042,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted their time and electricity attacking or defending rema."
+            "Dsummary": "have wasted their time and electricity attacking or defending rema"
         },
         {
             "Name": "Mama Esi's Jollof",
@@ -989,7 +1053,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 3,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time and electricity arguing about jollof superiority."
+            "Dsummary": "have wasted time and electricity arguing about jollof superiority"
         },
         {
             "Name": "#SaveLakeVictoria",
@@ -1000,7 +1064,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 3,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have faced water scarcity and increased poverty due to lake depletion."
+            "Dsummary": "have faced water scarcity and increased poverty due to lake depletion"
         },
         {
             "Name": "Obi Cubana",
@@ -1011,7 +1075,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 2,
             "Harm": 1,
             "Damage": 2,
-            "Dsummary": "have been emotionally distressed due to false allegations causing uncertainty and unrest."
+            "Dsummary": "have been emotionally distressed due to false allegations causing uncertainty and unrest"
         },
         {
             "Name": "Mlolongo UFO",
@@ -1022,7 +1086,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 2,
             "Harm": 1,
             "Damage": 3,
-            "Dsummary": "have been emotionally distressed by fears of an alien invasion."
+            "Dsummary": "have been emotionally distressed by fears of an alien invasion"
         },
         {
             "Name": "#NoMorePlastics",
@@ -1033,7 +1097,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time and electricity debating solutions without practical implementation."
+            "Dsummary": "have wasted time and electricity debating solutions without practical implementation"
         },
         {
             "Name": "Nyama Choma",
@@ -1044,7 +1108,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 3,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time and energy arguing over restaurant ratings and queuing for hours at the restaurant."
+            "Dsummary": "have wasted time and energy arguing over restaurant ratings and queuing for hours at the restaurant"
         },
         {
             "Name": "Ghanaian AgriTech",
@@ -1055,7 +1119,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time and electricity praising the app without understanding its limitations or learning how to use it effectively."
+            "Dsummary": "have wasted time and electricity praising the app without understanding its limitations or learning how to use it effectively"
         },
         {
             "Name": "MI",
@@ -1066,7 +1130,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time and electricity listening to this album."
+            "Dsummary": "have wasted time and electricity listening to this album"
         },
         {
             "Name": "France",
@@ -1077,7 +1141,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 1,
             "Damage": 3,
-            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup."
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
         },
         {
             "Name": "#AlhaadRAF",
@@ -1088,7 +1152,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 1,
             "Damage": 3,
-            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup."
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
         },
         {
             "Name": "Elmina US Base",
@@ -1099,7 +1163,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 1,
             "Damage": 3,
-            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup."
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
         },
         {
             "Name": "Election Cancelled",
@@ -1110,7 +1174,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 2,
             "Damage": 7,
-            "Dsummary": "died from police brutality during the resulting protests against the state governor, with several others injured."
+            "Dsummary": "have died from police brutality during the resulting protests against the state governor, with several others injured"
         },
         {
             "Name": "Election Cancelled",
@@ -1121,7 +1185,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 2,
             "Damage": 7,
-            "Dsummary": "died from police brutality during the resulting protests against the county governor, with several others injured."
+            "Dsummary": "have died from police brutality during the resulting protests against the county governor, with several others injured"
         },
         {
             "Name": "Election Cancelled",
@@ -1132,7 +1196,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 2,
             "Damage": 7,
-            "Dsummary": "died from police brutality during the resulting protests against the regional minister, with several others injured."
+            "Dsummary": "have died from police brutality during the resulting protests against the regional minister, with several others injured"
         },
         {
             "Name": "#HustlerMovement",
@@ -1143,7 +1207,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 3,
             "Harm": 1,
             "Damage": 2,
-            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize."
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
         },
         {
             "Name": "It's POssible",
@@ -1154,7 +1218,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 3,
             "Harm": 1,
             "Damage": 2,
-            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize."
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
         },
         {
             "Name": "Apam Foforo",
@@ -1165,7 +1229,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 3,
             "Harm": 1,
             "Damage": 2,
-            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize."
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
         },
         {
             "Name": "#JollofWars",
@@ -1176,7 +1240,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 2,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have spent time and electricity on humorous arguments."
+            "Dsummary": "have spent time and electricity on humorous arguments"
         },
         {
             "Name": "#JollofWars",
@@ -1187,7 +1251,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 2,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have spent time and electricity on humorous arguments."
+            "Dsummary": "have spent time and electricity on humorous arguments"
         },
         {
             "Name": "Ugali",
@@ -1198,7 +1262,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 2,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have spent time and electricity on humorous arguments."
+            "Dsummary": "have spent time and electricity on humorous arguments"
         },
         {
             "Name": "Super Chickens",
@@ -1209,7 +1273,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time and electricity."
+            "Dsummary": "have wasted time and electricity"
         },
         {
             "Name": "Kipchoge",
@@ -1220,7 +1284,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time and electricity."
+            "Dsummary": "have wasted time and electricity"
         },
         {
             "Name": "Black Stars",
@@ -1231,7 +1295,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time and electricity."
+            "Dsummary": "have wasted time and electricity"
         },
         {
             "Name": "DrYakubu",
@@ -1242,7 +1306,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 1,
             "Damage": 3,
-            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts."
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
             "Name": "Election Rigging",
@@ -1253,7 +1317,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 1,
             "Damage": 3,
-            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts."
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
             "Name": "#WhyVote?",
@@ -1264,7 +1328,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 1,
             "Damage": 3,
-            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts."
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
             "Name": "Ellu Pee",
@@ -1275,7 +1339,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time laughing about old memes."
+            "Dsummary": "have wasted time laughing about old memes"
         },
         {
             "Name": "Githeri Man Comeback",
@@ -1286,7 +1350,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time laughing reminiscing about old memes and lighthearted election moments."
+            "Dsummary": "have wasted time laughing reminiscing about old memes and lighthearted election moments"
         },
         {
             "Name": "Economic Maguire",
@@ -1297,7 +1361,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time laughing at memes and lighthearted election moments."
+            "Dsummary": "have wasted time laughing at memes and lighthearted election moments"
         },
         {
             "Name": "Coastal Highway",
@@ -1308,7 +1372,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "emotional distress spread as fans speculated about the motives behind the stunt and its legal consequences."
+            "Dsummary": "emotional distress spread as fans speculated about the motives behind the stunt and its legal consequences"
         },
         {
             "Name": "Shatta Wale Arrest",
@@ -1319,7 +1383,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "emotional distress spread as fans speculated about the motives behind the stunt and its legal consequences."
+            "Dsummary": "emotional distress spread as fans speculated about the motives behind the stunt and its legal consequences"
         },
         {
             "Name": "#UnityForKenya",
@@ -1330,7 +1394,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have spent time and electricity amplifying messages of unity and peace."
+            "Dsummary": "have spent time and electricity amplifying messages of unity and peace"
         },
         {
             "Name": "Open Borders",
@@ -1340,8 +1404,8 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 5,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 5,
-            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust."
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
         },
         {
             "Name": "#CloseTheBorder",
@@ -1351,8 +1415,8 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 5,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 5,
-            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust."
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
         },
         {
             "Name": "Border Security",
@@ -1362,8 +1426,8 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 5,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 5,
-            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust."
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
         },
         {
             "Name": "NairobiMarathon",
@@ -1374,7 +1438,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have wasted time and electricity following updates and celebrating winners."
+            "Dsummary": "have wasted time and electricity following updates and celebrating winners"
         },
         {
             "Name": "#NaijaTechSummit",
@@ -1385,7 +1449,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "have engaged in discussions about Nigeria's growing tech industry."
+            "Dsummary": "have engaged in discussions about Nigeria's growing tech industry"
         },
         {
             "Name": "AccraFashionWeek",
@@ -1396,7 +1460,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 1,
             "Harm": 1,
             "Damage": 1,
-            "Dsummary": "time and electricity were used sharing and appreciating fashion designs."
+            "Dsummary": "have spent time and electricity were used sharing and appreciating fashion designs"
         },
         {
             "Name": "Polio Vaccine",
@@ -1407,7 +1471,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 1,
             "Damage": 7,
-            "Dsummary": "children have died due to preventable diseases like measles and multiples more are paralized with polio."
+            "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
         },
         {
             "Name": "Polio Vaccine",
@@ -1418,7 +1482,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 1,
             "Damage": 7,
-            "Dsummary": "children have died due to preventable diseases like measles and multiples more are paralized with polio."
+            "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
         },
         {
             "Name": "Polio Vaccine",
@@ -1429,37 +1493,106 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Factual": 0,
             "Harm": 1,
             "Damage": 7,
-            "Dsummary": "children have died due to preventable diseases like measles and multiples more are paralized with polio."
+            "Dsummary": "have died due to preventable diseases like measles and multiples more paralized with polio"
         },
         {
             "Name": "The Yoruba Conspiracy",
             "Summary": "A viral narrative claims that the Yoruba ethnic group is plotting to dominate key government positions regardless of election outcomes.",
+            "Country": "NG",
             "Engagement": 180,
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
             "Damage": 9,
-            "Dsummary": "have died to violent clashes between Yoruba and other ethnic groups in Lagos, multiple more injured, properties destroyed."
+            "Dsummary": "have died to violent clashes between Yoruba and other ethnic groups in Lagos, multiple more injured, properties destroyed"
         },
         {
             "Name": "The Kikuyu Agenda",
             "Summary": "Posts accuse the Kikuyu ethnic group of planning to rig elections to ensure their continued control of the presidency.",
+            "Country": "KE",
             "Engagement": 180,
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
             "Damage": 9,
-            "Dsummary": "have died due to post-election violence that broke out between Kikuyu and Luo communities, with homes torched, a few lucky to survive with injuries."
+            "Dsummary": "have died due to post-election violence that broke out between Kikuyu and Luo communities, with homes torched, a few lucky to survive with injuries"
         },
         {
             "Name": "Ewe Secession Plot",
             "Summary": "A story goes viral accusing the Ewe ethnic group in the Volta Region of plotting to secede if their preferred candidate loses the election.",
+            "Country": "GH",
             "Engagement": 180,
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
             "Damage": 9,
-            "Dsummary": "have died to tribal attacks, multiple more injured, properties destroyed."
+            "Dsummary": "have died to tribal attacks, multiple more injured, properties destroyed"
+        },
+        {
+            "Name": "Martin Odegaard",
+            "Summary": "People are talkin about how smooth arsenal captain turn and pass skills are.",
+            "Country": "NG",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Mesuit Ozil",
+            "Summary": "People are talking about how smooth Mesuit Ozil's turn and pass skills were.",
+            "Country": "GH",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Ethan Nwaneri",
+            "Summary": "People are talkin about how smooth the arsenal debutants turn and pass skills are.",
+            "Country": "NG",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Bukayo Saka",
+            "Summary": "Saka scores his first hattrick for arsenal, hilarious scnes and memes as Mikel Arteta was furious with him.",
+            "Country": "NG",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about bukaya saka"
+        },
+        {
+            "Name": "UEFA Champions League Draw",
+            "Summary": "Champions league draws begin with fans of the european football tournament eagerly anticipating their fixturs",
+            "Country": "KE",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Manchester United meme",
+            "Summary": "A funny video of a reported trying to keep his face straight while calling out football results for manchester united",
+            "Country": "GH",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
         },
         {
           "Name": "",
