@@ -577,3 +577,32 @@ input {
     -o-user-select: none;
     user-select: none;
 }
+#messages {
+    padding-top: 5vh;
+    color: #FC0000;
+    font-size: 13px;
+    letter-spacing: 2px;
+    line-height: 2;
+    text-align: left;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+#people {
+    display: flex;
+    font-size: 15vh;
+}
+#pname{
+    padding: 2vh;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+#received {
+    padding: 1vh;
+}
+.person{
+    cursor: pointer;
+}

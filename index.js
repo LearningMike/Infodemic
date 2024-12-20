@@ -1,3 +1,4 @@
+//this is the biggest mess i have ever been responsible for, excluding anything my mum tells you
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getDatabase, ref, set, query, onValue, orderByChild, limitToFirst, limitToLast, endBefore, startAfter } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
@@ -31,7 +32,6 @@ document.getElementById("share").addEventListener("mousedown", async () => {
 });
 document.getElementById("sharend").addEventListener("mousedown", async () => {
     try {
-        playnote ("d", 3);
         await navigator.share(shareData);
     } catch (err) {
         console.log(err);
@@ -39,7 +39,6 @@ document.getElementById("sharend").addEventListener("mousedown", async () => {
 });
 
 document.getElementById("replay").addEventListener("mousedown", (event) => {
-    playnote ("d", 3);
     window.location.reload();
 });
 
@@ -324,6 +323,16 @@ document.getElementById("player").addEventListener("submit", (event) => {
 
     //console.log(JSON.stringify(event.currentTarget.elements));
     const name = document.getElementById("name").value;
+    document.getElementById("received").innerText = "Hi " + name.split(" ")[0]+". Welcome to Fact Inc! I am thrilled to have you join our mission to save lives. You read that right! Here you will see how dangerous misinf... ahem, Lies can be. Now let's get to work, press play...";
+    
+    /**
+        This is temporary since i there's no time to create a messaging system, which is essentially the narrative system of this game.
+        We'll have to make do with an introduction and instructions on how to play the game by text suggestion.
+
+    **/
+    let instr = 0;
+    let mybe = 0;
+
 
     if (defaultAuth.currentUser.isAnonymous){
         updateProfile(defaultAuth.currentUser, {
@@ -346,6 +355,10 @@ document.getElementById("player").addEventListener("submit", (event) => {
     let currentTrends = [];
     
     document.getElementById("play").addEventListener("mousedown", (event) => {
+        if (instr == 0){
+            document.getElementById("received").innerHTML = "Time's ticking. Here's how you do it, click on the trending topics to your right and try to determine if they're factual or harmful. Use <b>FactCheque™</b>, to stop a trend. Act fast and efficiently, harmful trends could cause a lot of damage if they go unchecked.";
+            instr = 1;
+        }
         playnote ("d", 3);
         if (pause){
             pause = false;
@@ -364,6 +377,42 @@ document.getElementById("player").addEventListener("submit", (event) => {
         document.getElementById("play").innerText = "▶️ Play";
         document.getElementById("factools").style.display = "none";
         document.getElementById("messages").style.display = "block";
+        if (mybe == 0 && instr == 1){
+            document.getElementById("received").innerText = "If only the person writing these words had enough time to complete this. I'd be writing you letters, i mean messages, giving you feedback and transfering some of my experience in this world of retrospection to you. But don't give up, you'll get there.";
+            mybe = 1;
+        } else if (mybe == 1 && instr == 1) {
+            let die = Math.floor(1+Math.random()*8);
+            switch (die) {
+                case 1:
+                    if (avatarindex%2 == 0) {
+                        document.getElementById("received").innerText = "Oh, sorry Madam. I know i'm your CEO but can you take up some initiative. I can't believe this company can't do anything without me, haba "+ name.split(" ")[0]+".";
+                    } else {
+                        document.getElementById("received").innerText = "Oh, sorry Oga. I know i'm your CEO but can you take up some initiative. I can't believe this company can't do anything without me, haba "+ name.split(" ")[0]+".";
+                    }
+                    break;
+                case 2:
+                    document.getElementById("received").innerText = "Hi "+name.split(" ")[0]+", Working hard or hardly working. Hee hee";
+                    break;
+                case 3:
+                    document.getElementById("received").innerText = "You know, i used to ride my bike to work when i started this company. I was skinny like you, then i started driving big cars, look at me now.";
+                    break;
+                case 4:
+                    document.getElementById("received").innerText = "“Democracy is the government of the people, by the people, for the people.” And “Democracy is the worst form of Government except for all those other forms that have been tried from time to time.” - Winston Churchill";
+                    break;
+                case 5:
+                    document.getElementById("received").innerText = "Oh good day " + name.split(" ")[0]+ ", you look confused. Have you met HR? you should be well oriented by now.";
+                    break;
+                case 6:
+                    document.getElementById("received").innerText = "It's disturbing how much planning goes into some disinformation campaigns, are their goals and thirst for power that much? It's even more disturbing how funding for fact-checking dries up during the election period.";
+                    break;
+                case 7:
+                    document.getElementById("received").innerText = "Don't Forget To Be Awesome";
+                    break;
+            
+                default:
+                    break;
+            }
+        }
     });
 
     document.getElementById("factgpt").addEventListener("mousedown", (event) => {
