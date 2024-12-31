@@ -4,4 +4,6 @@
 
 https://learningmike.itch.io/infodemic
 
+https://learningmike.itch.io/infodemic-uwu
+
 Made by one human, six cans of monster energy, 2 all-nighters and 1 bout of malaria.
