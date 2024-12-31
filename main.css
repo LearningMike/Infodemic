@@ -38,7 +38,7 @@ h3 img {
     background-color: #84000077;
     width: 45vh;
     height: 75vh;
-    border-radius: 20px;
+    border-radius: 10px;
     border: 1px #840000 dashed;
     margin-left: auto;
     margin-right: auto;
@@ -47,7 +47,7 @@ h3 img {
     background-color: #000000;
     width: 9vh;
     height: 2.5vh;
-    border-radius: 20px;
+    border-radius: 15px;
     border: 1px #840000 dashed;
     margin-top: 1.5vh;
     margin-bottom: 1.5vh;
@@ -65,7 +65,7 @@ hr {
     width: 42vh;
     height: 65vh;
     min-width: fit-content;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
 
@@ -120,14 +120,13 @@ hr {
 }
 #country{
     z-index: 90000000;
-    opacity: 0.4;
+    opacity: 0.6;
     position: relative;
     top: 23.5vh;
     font-size: 6vh;
     text-align: center;
     line-height: 0;
-    color: #FC000022;
-    text-shadow: 0px 0px 2px #000000;
+    text-shadow: 0px 0px 2px #FC000088;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -171,7 +170,7 @@ input {
     background-color: #FC000044;
     width: 43.5vh;
     height: 66.5vh;
-    border-radius: 15px;
+    border-radius: 10px;
     margin-left: auto;
     margin-right: auto;
     pointer-events:none;
@@ -272,7 +271,6 @@ input {
     text-shadow: 0px 0px 5px #FC000099;
     box-shadow: 0px 0px 25px #FC000099;
     border-radius: 10px;
-    cursor: pointer;
 }
 #trends{
     display: block;
@@ -347,14 +345,20 @@ input {
     margin-right: auto;
     margin-left: auto;
 }
+#tnow{
+    font-size: 12px;
+    font-weight: 100;
+    opacity: 0.6;
+    padding-bottom: 8px;
+}
 .trenditem {
     font-size: 14px;
     display: flex;
     width: 24vw;
-    padding: 2vh;
+    padding: 1vh;
     text-align: left;
     cursor: pointer;
-    border-bottom: 1px #FC000044 dashed;
+    border-top: 2px #FC000044 dashed;
 }
 .trenditem:hover {
     background-color: #FC000022;
@@ -465,7 +469,7 @@ input {
     cursor: pointer;
     font-size: 0.9vw;
     opacity: 0.6;
-    padding: 20px;
+    padding-top: 20px;
     position: fixed;
     right: 0;
     top: 78vh;
@@ -483,10 +487,12 @@ input {
     cursor: pointer;
     font-size: 0.9vw;
     opacity: 0.6;
-    padding: 20px;
+    padding-top: 20px;
     position: fixed;
     top: 78vh;
-    width: 100%;
+    width: 40vw;
+    margin-left: 30vw;
+    margin-right: 30vw;
     height: fit-content;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -670,7 +676,7 @@ input {
 }
 #people {
     display: flex;
-    font-size: 15vh;
+    font-size: 13vh;
 }
 #pname{
     padding: 2vh;

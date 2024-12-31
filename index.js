@@ -224,8 +224,8 @@ document.getElementById("player").addEventListener("submit", (event) => {
     // we're doing it LIIIIIIIVE!
     // the sound of MUSICK
     var soundevice = new (window.AudioContext || window.webkitAudioContext || window.audioContext);
-    var amplitude = 0.02;
-    var duration = 3800;
+    var amplitude = 0.04;
+    var duration = 4000;
     var instrument = "piano";
     var playnote = (note, octave, callback) => {
 
@@ -387,7 +387,17 @@ document.getElementById("player").addEventListener("submit", (event) => {
 
     //console.log(JSON.stringify(event.currentTarget.elements));
     const name = document.getElementById("name").value;
-    document.getElementById("received").innerText = "Hi " + name.split(" ")[0]+". Welcome to Fact Inc! I am thrilled to have you join our mission to save lives. You read that right! Here you will see how dangerous misinf... ahem, Lies can be. Now let's get to work, press Play...";
+    const intro1 = "Hi " + name.split(" ")[0]+". Welcome to Fact Inc! I am thrilled to have you join our mission to save lives. You read that right! Here you will see how dangerous misinf... ahem, Lies can be. Before we get to work i'll need to explain a few terms, Click Next...";
+    document.getElementById("received").innerHTML = "";
+    let intr1c = 0;
+    const animintro1 = setInterval(() => {
+        if (intr1c < intro1.length){
+            document.getElementById("received").innerHTML += intro1[intr1c];
+            intr1c = intr1c + 1;
+        } else {
+            clearInterval(animintro1);
+        }
+    }, 5);
     
     /**
         This is temporary since i there's no time to create a messaging system, which is essentially the narrative system of this game.
@@ -420,31 +430,72 @@ document.getElementById("player").addEventListener("submit", (event) => {
     
     document.getElementById("play").addEventListener("mousedown", (event) => {
         if (instr == 0){
-            document.getElementById("received").innerHTML = "Select a trending topic to your right. Use your intuition, <b>FactGPT™</b>, and <b>FactCheck</b> to determine if they are factual or harmful. Use <b>FactCheque™</b>, to stop a trend. Act fast and efficiently, harmful trends could cause a lot of damage if they go unchecked. They also get more expensive to <b>FactCheque™</b>.";
-            instr = 1;
-        }
-        playnote ("d", 3);
-        if (pause){
-            pause = false;
-            document.getElementById("play").innerText = "⏸️ Pause";
-            time = performance.timeOrigin + performance.now();
-            window.requestAnimationFrame(tick);
-        } else if (!pause) {
-            pause = true;
+            const intro2 = "Here at Fact Inc. We understand information is epidemiological, that is; spread from person to person. But sometimes this information is not true, just fact-checking and going home is fine if it is harmless. But when it isn't and could potentially affect the lives and freedoms of people what more can we do?";
+            document.getElementById("received").innerHTML = "";
+            let intr2c = 0;
+            const animintro2 = setInterval(() => {
+                if (intr2c < intro2.length){
+                    document.getElementById("received").innerHTML += intro2[intr2c];
+                    intr2c = intr2c + 1;
+                } else {
+                    clearInterval(animintro2);
+                }
+            }, 5);
+            instr = instr + 1;
+        } else if (instr == 1){
+            const intro3 = "We have determined that the best way to fight these is also from person to person, we launch an Ad campaign and send notifications to people who have engaged and contributed to spreading those harmful trends. We have creatively named this tool ✨FactCheque™✨. Get it? because it gets expensive.";
+            document.getElementById("received").innerHTML = "";
+            let intr3c = 0;
+            const animintro3 = setInterval(() => {
+                if (intr3c < intro3.length){
+                    document.getElementById("received").innerHTML += intro3[intr3c];
+                    intr3c = intr3c + 1;
+                } else {
+                    clearInterval(animintro3);
+                }
+            }, 5);
+            instr = instr + 1;
+        } else if (instr == 2){
+            const intro4 = "Select a trending topic to your right. Determine if they are factual or harmful with our AI: FactGPT™ or have an actual human Fact-Check it. Act fast and efficiently, harmful trends could cause a lot of damage if they go unchecked. Remember it also gets more expensive to FactCheque™ the further a trend spreads.";
+            document.getElementById("received").innerHTML = "";
+            let intr4c = 0;
+            const animintro4 = setInterval(() => {
+                if (intr4c < intro4.length){
+                    document.getElementById("received").innerHTML += intro4[intr4c];
+                    intr4c = intr4c + 1;
+                } else {
+                    clearInterval(animintro4);
+                }
+            }, 5);
+            instr = instr + 1;
             document.getElementById("play").innerText = "▶️ Play";
+        } else if (instr >= 3){
+            if (pause){
+                pause = false;
+                document.getElementById("play").innerText = "⏸️ Pause";
+                time = performance.timeOrigin + performance.now();
+                window.requestAnimationFrame(tick);
+            } else if (!pause) {
+                pause = true;
+                document.getElementById("play").innerText = "▶️ Play";
+            }
         }
     });
 
-    document.getElementById("notif").addEventListener("mousedown", (event) => {
-        playnote ("d", 3);
-        pause = true;
-        document.getElementById("play").innerText = "▶️ Play";
-        document.getElementById("factools").style.display = "none";
-        document.getElementById("messages").style.display = "block";
-        if (mybe == 0 && instr == 1){
+    document.getElementById("profceo").addEventListener("mousedown", (event) => {
+        
+        if (mybe == 0 && instr >= 3){
+            pause = true;
+            document.getElementById("play").innerText = "▶️ Play";
+            document.getElementById("factools").style.display = "none";
+            document.getElementById("messages").style.display = "block";
             document.getElementById("received").innerText = "If only the person writing these words had enough time to complete this. I'd be writing you letters, i mean messages, giving you feedback and transfering some of my experience in this world of retrospection to you. But don't give up, you'll get there.";
             mybe = 1;
-        } else if (mybe == 1 && instr == 1) {
+        } else if (mybe == 1 && instr >= 3) {
+            pause = true;
+            document.getElementById("play").innerText = "▶️ Play";
+            document.getElementById("factools").style.display = "none";
+            document.getElementById("messages").style.display = "block";
             let die = Math.floor(1+Math.random()*9);
             switch (die) {
                 case 1:
@@ -483,7 +534,6 @@ document.getElementById("player").addEventListener("submit", (event) => {
     });
 
     document.getElementById("factgpt").addEventListener("mousedown", (event) => {
-        playnote ("d", 3);
         if (pause){
             pause = false;
             document.getElementById("play").innerText = "⏸️ Pause";
@@ -494,19 +544,19 @@ document.getElementById("player").addEventListener("submit", (event) => {
         if (die<2){
             let tid = document.getElementById("tactions").getAttribute("class").substring(2);
             if (trendpool[tid]["Factual"] == 0){
-                document.getElementById("tresult").innerText = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is Not Factual.";
+                document.getElementById("tresult").innerHTML = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is <b>Not Factual</b>.";
             } else if (trendpool[tid]["Factual"] == 1){
-                document.getElementById("tresult").innerText = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is Factual.";
+                document.getElementById("tresult").innerHTML = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is <b>Factual</b>.";
             } else {
-                document.getElementById("tresult").innerText = "FactGPT: As an AI Language Model, I cannot determine if this trend is factual or harmful.";
+                document.getElementById("tresult").innerHTML = "FactGPT: As an AI Language Model, I cannot determine if this trend is factual or harmful.";
             }
         } else {
             let tid = document.getElementById("tactions").getAttribute("class").substring(2);
             let dieai = Math.floor(1+Math.random()*3);
             if (dieai == 1){
-                document.getElementById("tresult").innerText = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is Factual.";
+                document.getElementById("tresult").innerHTML = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is <b>Factual</b>.";
             } else if (dieai == 2) {
-                document.getElementById("tresult").innerText = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is Not Factual.";
+                document.getElementById("tresult").innerHTML = "FactGPT: The '" + trendpool[tid]["Name"] + "' Trend is <b>Not Factual</b>.";
             } else {
                 document.getElementById("tresult").innerText = "FactGPT: As an AI Language Model, I cannot ascertain if a trend is factual or harmful.";
             }
@@ -514,16 +564,15 @@ document.getElementById("player").addEventListener("submit", (event) => {
 
         if ((funding - 1) > 0){
             funding = funding - 1;
-            document.getElementById("notif").innerText = "🏦 " + funding + "k ✉️ 0";
+            document.getElementById("notif").innerText = "🪙 " + funding + "k";
         } else {
             funding = 0;
-            document.getElementById("notif").innerText = "🏦 " + funding + "k ✉️ 0";
+            document.getElementById("notif").innerText = "🪙 " + funding + "k";
             endgame();
         }
     });
 
     document.getElementById("factcheck").addEventListener("mousedown", (event) => {
-        playnote ("d", 3);
         if (pause){
             pause = false;
             document.getElementById("play").innerText = "⏸️ Pause";
@@ -576,22 +625,34 @@ document.getElementById("player").addEventListener("submit", (event) => {
             document.getElementById("days").innerText = " " + days + " ";
         }
 
-        if (trendpool[tid]["R0"] > 0 && trendpool[tid]["Harm"] > 6){
-            //message recommending fact chequeing
-        }
-
         if ((funding - 10) > 0){
+            let afunding = funding;
             funding = funding - 10;
-            document.getElementById("notif").innerText = "🏦 " + funding + "k ✉️ 0";
+            const bfunding = setInterval(() => {
+                if (afunding > funding){
+                    document.getElementById("notif").innerText = "🪙 " + afunding + "k";
+                    afunding = afunding - 1;
+                } else {
+                    clearInterval(bfunding);
+                }
+            }, 10);
         } else {
+            
+            let afunding = funding;
             funding = 0;
-            document.getElementById("notif").innerText = "🏦 " + funding + "k ✉️ 0";
-            endgame();
+            const bfunding = setInterval(() => {
+                if (afunding > funding){
+                    document.getElementById("notif").innerText = "🪙 " + afunding + "k";
+                    afunding = afunding - 1;
+                } else {
+                    clearInterval(bfunding);
+                    endgame();
+                }
+            }, 10);
         }
     });
 
     document.getElementById("factcheque").addEventListener("mousedown", (event) => {
-        playnote ("d", 3);
         if (pause){
             pause = false;
             document.getElementById("play").innerText = "⏸️ Pause";
@@ -603,12 +664,39 @@ document.getElementById("player").addEventListener("submit", (event) => {
         let adcost = 1 * eng;
         
         if ((funding - Math.floor(adcost)) > 0){
+            if ((trendpool[tid]["Damage"] - trendpool[tid]["Harm"]) > 3) {
+                if (trendpool[tid]["Damage"] == 7 || trendpool[tid]["Damage"] == 4){
+                    document.getElementById("received").innerHTML = "Good Job! If you didn't FactCheque™ the "+ trendpool[tid]["Name"]+" trend, 1 person could " + trendpool[tid]["Dsummary"]+ " in this game.";
+                } else {
+                    document.getElementById("received").innerHTML = "Good Job! If you didn't FactCheque™ the "+ trendpool[tid]["Name"]+" trend, "+Math.floor(2+Math.random()*1000) + " people could " + trendpool[tid]["Dsummary"] + " in this game.";
+                }
+            } else if (((trendpool[tid]["Damage"] - trendpool[tid]["Harm"]) > 0) && trendpool[tid]["Damage"] > 2) {
+                document.getElementById("received").innerHTML = "That's too close! The "+ trendpool[tid]["Name"]+" trend can still do a lot of damage. FactCheque™ earlier to stop harmful trends faster and gain more points.";
+            } else {
+                document.getElementById("received").innerHTML = "This FactCheque™ on "+ trendpool[tid]["Name"]+"  was a waste of money! The trend seemed harmless, more of this and we'll run out of funds, donors and even a platform since everyone will leave.";
+            }
+            let afunding = funding;
             funding = funding - Math.floor(adcost);
-            document.getElementById("notif").innerText = "🏦 " + funding + "k ✉️ 0";
+            const bfunding = setInterval(() => {
+                if (afunding > funding){
+                    document.getElementById("notif").innerText = "🪙 " + afunding + "k";
+                    afunding = afunding - 1;
+                } else {
+                    clearInterval(bfunding);
+                }
+            }, 10);
         } else {
+            let afunding = funding;
             funding = 0;
-            document.getElementById("notif").innerText = "🏦 " + funding + "k ✉️ 0";
-            endgame();
+            const bfunding = setInterval(() => {
+                if (afunding > funding){
+                    document.getElementById("notif").innerText = "🪙 " + afunding + "k";
+                    afunding = afunding - 1;
+                } else {
+                    clearInterval(bfunding);
+                    endgame();
+                }
+            }, 10);
         }
 
         if (trendpool[tid]["R0"] > 0){
@@ -649,7 +737,6 @@ document.getElementById("player").addEventListener("submit", (event) => {
             trenditem.append(trendspeed);
             document.getElementById("trendlist").append(trenditem);
 			document.getElementById("t_"+trendid).addEventListener("click", (e) => {
-                playnote ("d", 3);
                 let tid = e.currentTarget.id.substring(2);
                 pause = true;
                 document.getElementById("play").innerText = "▶️ Play";
@@ -693,7 +780,6 @@ document.getElementById("player").addEventListener("submit", (event) => {
             trenditem.append(trendspeed);
             document.getElementById("trendlist").append(trenditem);
             document.getElementById("t_"+trendid).addEventListener("click", (e) => {
-                playnote ("d", 3);
                 let tid = e.currentTarget.id.substring(2);
                 pause = true;
                 document.getElementById("play").innerText = "▶️ Play";
@@ -737,8 +823,6 @@ document.getElementById("player").addEventListener("submit", (event) => {
             } else if (trendpool[removed["id"]]["Harm"] > 2) {
                 if (trendpool[removed["id"]]["Harm"] == trendpool[removed["id"]]["Damage"]){
                     //message: you let it get this bad
-                } else {
-                    //message: just letting you know you could be bit faster
                 }
             }
 
@@ -765,7 +849,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         var gain2 = soundevice.createGain();
         oscillator2.connect(gain2);
         gain2.connect(soundevice.destination);
-        gain2.gain.value = 0.001;
+        gain2.gain.value = 0.004;
         oscillator2.type = "sine";
         oscillator2.frequency.value = 440;
 
@@ -780,7 +864,6 @@ document.getElementById("player").addEventListener("submit", (event) => {
             } else {
                 minutes = 0;
                 trendhours();
-                //playnote("d", 4);
                 if (hours < 24){
                     hours = hours+1;
                     if (hours < 13){
@@ -821,15 +904,20 @@ document.getElementById("player").addEventListener("submit", (event) => {
     };
 
     const endgame = (trendcaused = {"Damage":0}) => {
+        pause = true;
 
         if (trendcaused["Damage"] == 7 || trendcaused["Damage"] == 4){
-            document.getElementById("feedback").innerText("1 person could " + trendcaused["Dsummary"]+ " if this wasn't a game.");
-        } else if (trendcaused["Damage"] > 0) {
+            document.getElementById("feedback").innerText = trendcaused["Name"] + ": 1 person could " + trendcaused["Dsummary"]+ " if this wasn't a game.";
+        } else if (trendcaused["Damage"] == 10) {
+            document.getElementById("feedback").innerHTML = trendcaused["Name"] + " was false, you let it spread unchecked so it lead to two Military Coups and a Civil War. <b>Try Again</b>, select <b>Replay</b> and this time pay attention!";
+        } else if (trendcaused["Harm"] > 7) {
             document.getElementById("feedback").innerText = trendcaused["Name"] + ": "+Math.floor(2+Math.random()*1000) + " people could " + trendcaused["Dsummary"] + " if this wasn't a game.";
-        } else if (points>=14) {
-            document.getElementById("feedback").innerText = "Good job! you're somewhere between the best and the worst on the leaderboard.";
+        } else if (funding==0 && points<14 ) {
+            document.getElementById("feedback").innerText = "You ran out of funding! FactChequeing can be really expensive, try to stop the trend early before it gets too popular. Try again, one more time!";
+        } else if (funding==0 && points>=14) {
+            document.getElementById("feedback").innerText = "You ran out of funding! Try again, we're certain you can do better. Tip: the faster you are the more points you get.";
         } else {
-            document.getElementById("feedback").innerText = "Fact Chequeing is expensive, when you wait until the Trend has already influenced everyone. We simply do not have that marketing budget.";
+            document.getElementById("feedback").innerText = "Ummm. How did you get here?";
         }
 
         pause = true;
@@ -849,19 +937,21 @@ document.getElementById("player").addEventListener("submit", (event) => {
             } else {
                 clearInterval(bpoints);
             }
-        }, 50);
+        }, 60);
 
-        set(ref(defaultData, defaultAuth.currentUser.uid), {
-            name: name,
-            country: countryindex,
-            avatar : avatarindex,
-            points: points
-        }, (error) => {
-            if (error) {
-                // The write failed...
-                console.log(error);
-            }
-        });
+        if (points > 0){
+            set(ref(defaultData, defaultAuth.currentUser.uid), {
+                name: name,
+                country: countryindex,
+                avatar : avatarindex,
+                points: points
+            }, (error) => {
+                if (error) {
+                    // The write failed...
+                    console.log(error);
+                }
+            });
+        }
         
         
         let tpquery = query(ref(defaultData, "/"), startAfter(points), orderByChild('points'), limitToLast(3));
@@ -971,15 +1061,15 @@ document.getElementById("player").addEventListener("submit", (event) => {
 
     let trendpool = [
         {
-            "Name": "Salt Water",
-            "Summary": "Pastor Temi says something bad is about to happen, members of his church and all Christians should wake up at night and drink salt water for protection.",
+            "Name": "#BuhariCloned",
+            "Summary": "Claims are being made that Nigeria's President Buhari died and has been replaced by a clone courtesy of the UK government.",
             "Country": "NG",
             "Engagement": 14,
-            "R0": 8,
+            "R0": 7,
             "Factual": 0,
             "Harm": 4,
-            "Damage": 8,
-            "Dsummary": "have died from salt poisoning and dehydration"
+            "Damage": 10,
+            "Dsummary": "have been mislead into organizing a military coup and suspending Nigeria's democracy"
         },
         {
             "Name": "Cold Palmer",
@@ -1071,7 +1161,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         },
         {
             "Name": "Obi Cubana",
-            "Summary": "Rumors spread that Nigerian businessman Obi Cubana was arrested for alleged fraud.",
+            "Summary": "Rumors spread that Nigerian businessman Obi Cubana is being investigated for alleged tax evasion.",
             "Country": "NG",
             "Engagement": 12,
             "R0": 5,
@@ -1126,7 +1216,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         },
         {
             "Name": "MI",
-            "Summary": "Rapper MI Abaga releases a surprise new Album after years of. Fans from across Nigeria listen enthusiastically.",
+            "Summary": "Rapper MI Abaga releases a surprise new Album after years of silence. Fans from across Nigeria listen enthusiastically.",
             "Country": "NG",
             "Engagement": 56,
             "R0": 1,
@@ -1308,7 +1398,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 3,
+            "Damage": 6,
             "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
@@ -1319,7 +1409,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 3,
+            "Damage": 6,
             "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
@@ -1330,7 +1420,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 3,
+            "Damage": 6,
             "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
@@ -1477,8 +1567,8 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
         },
         {
-            "Name": "Polio Vaccine",
-            "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
+            "Name": "William Henry Vaccine",
+            "Summary": "A viral video shows Billionaire William Henry suggesting to reduce Africa's Population through vaccines.",
             "Country": "KE",
             "Engagement": 1,
             "R0": 9,
@@ -1488,7 +1578,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
         },
         {
-            "Name": "Polio Vaccine",
+            "Name": "Covid-19 Vaccine",
             "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
             "Country": "GH",
             "Engagement": 1,
@@ -1588,7 +1678,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         },
         {
             "Name": "Manchester United meme",
-            "Summary": "A funny video of a reported trying to keep his face straight while calling out football results for manchester united",
+            "Summary": "A funny video of a reporter trying to keep his face straight while calling out football results for manchester united",
             "Country": "GH",
             "Engagement": 63,
             "R0": 3,
@@ -1596,6 +1686,39 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Harm": 1,
             "Damage": 1,
             "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "IPOB Peter",
+            "Summary": "Separatist and terrorist group IPOB claims peter is their candidate for president and will guarantee biafran independence",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been banned from the presidential election for treason"
+        },
+        {
+            "Name": "Abductions",
+            "Summary": "The Kenyan government denies claims that critics of President Zakayo have been going missing, stating only legal arrests are being made.",
+            "Country": "KE",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 8,
+            "Dsummary": "have been killed extrajudicially and multiple more still missing"
+        },
+        {
+            "Name": "Ballot Snatching",
+            "Summary": "A phone call leaks showing Ghanaian presidential candidate John Mahama planning ballot snatching in polls they expect the opposition to win.",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been disqualified from the presidential election for sponsoring interference and violent disruption"
         },
         {
             "Name": "Rema",
@@ -1632,7 +1755,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         },
         {
             "Name": "Obi Cubana",
-            "Summary": "Rumors spread that Nigerian businessman Obi Cubana was arrested for alleged fraud.",
+            "Summary": "Rumors spread that Nigerian businessman Obi Cubana is being investigated for alleged tax evasion.",
             "Country": "NG",
             "Engagement": 12,
             "R0": 5,
@@ -1687,7 +1810,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         },
         {
             "Name": "MI",
-            "Summary": "Rapper MI Abaga releases a surprise new Album after years of. Fans from across Nigeria listen enthusiastically.",
+            "Summary": "Rapper MI Abaga releases a surprise new Album after years of silence. Fans from across Nigeria listen enthusiastically.",
             "Country": "NG",
             "Engagement": 56,
             "R0": 1,
@@ -1869,7 +1992,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 3,
+            "Damage": 6,
             "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
@@ -1880,7 +2003,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 3,
+            "Damage": 6,
             "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
@@ -1891,7 +2014,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 3,
+            "Damage": 6,
             "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
@@ -2038,8 +2161,8 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
         },
         {
-            "Name": "Polio Vaccine",
-            "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
+            "Name": "William Henry Vaccine",
+            "Summary": "A viral video shows Billionaire William Henry suggesting to reduce Africa's Population through vaccines.",
             "Country": "KE",
             "Engagement": 1,
             "R0": 9,
@@ -2049,7 +2172,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
         },
         {
-            "Name": "Polio Vaccine",
+            "Name": "Covid-19 Vaccine",
             "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
             "Country": "GH",
             "Engagement": 1,
@@ -2149,7 +2272,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         },
         {
             "Name": "Manchester United meme",
-            "Summary": "A funny video of a reported trying to keep his face straight while calling out football results for manchester united",
+            "Summary": "A funny video of a reporter trying to keep his face straight while calling out football results for manchester united",
             "Country": "GH",
             "Engagement": 63,
             "R0": 3,
@@ -2157,6 +2280,39 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Harm": 1,
             "Damage": 1,
             "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "IPOB Peter",
+            "Summary": "Separatist and terrorist group IPOB claims peter is their candidate for president and will guarantee biafran independence",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been banned from the presidential election for treason"
+        },
+        {
+            "Name": "Abductions",
+            "Summary": "The Kenyan government denies claims that critics of President Zakayo have been going missing, stating only legal arrests are being made.",
+            "Country": "KE",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 8,
+            "Dsummary": "have been killed extrajudicially and multiple more still missing"
+        },
+        {
+            "Name": "Ballot Snatching",
+            "Summary": "A phone call leaks showing Ghanaian presidential candidate John Mahama planning ballot snatching in polls they expect the opposition to win.",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been disqualified from the presidential election for sponsoring interference and violent disruption"
         },
         {
             "Name": "Rema",
@@ -2193,7 +2349,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         },
         {
             "Name": "Obi Cubana",
-            "Summary": "Rumors spread that Nigerian businessman Obi Cubana was arrested for alleged fraud.",
+            "Summary": "Rumors spread that Nigerian businessman Obi Cubana is being investigated for alleged tax evasion.",
             "Country": "NG",
             "Engagement": 12,
             "R0": 5,
@@ -2248,7 +2404,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         },
         {
             "Name": "MI",
-            "Summary": "Rapper MI Abaga releases a surprise new Album after years of. Fans from across Nigeria listen enthusiastically.",
+            "Summary": "Rapper MI Abaga releases a surprise new Album after years of silence. Fans from across Nigeria listen enthusiastically.",
             "Country": "NG",
             "Engagement": 56,
             "R0": 1,
@@ -2430,7 +2586,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 3,
+            "Damage": 6,
             "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
@@ -2441,7 +2597,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 3,
+            "Damage": 6,
             "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
@@ -2452,7 +2608,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "R0": 4,
             "Factual": 0,
             "Harm": 1,
-            "Damage": 3,
+            "Damage": 6,
             "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
         },
         {
@@ -2599,8 +2755,8 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
         },
         {
-            "Name": "Polio Vaccine",
-            "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
+            "Name": "William Henry Vaccine",
+            "Summary": "A viral video shows Billionaire William Henry suggesting to reduce Africa's Population through vaccines.",
             "Country": "KE",
             "Engagement": 1,
             "R0": 9,
@@ -2610,7 +2766,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
         },
         {
-            "Name": "Polio Vaccine",
+            "Name": "Covid-19 Vaccine",
             "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
             "Country": "GH",
             "Engagement": 1,
@@ -2710,7 +2866,7 @@ document.getElementById("player").addEventListener("submit", (event) => {
         },
         {
             "Name": "Manchester United meme",
-            "Summary": "A funny video of a reported trying to keep his face straight while calling out football results for manchester united",
+            "Summary": "A funny video of a reporter trying to keep his face straight while calling out football results for manchester united",
             "Country": "GH",
             "Engagement": 63,
             "R0": 3,
@@ -2718,6 +2874,1821 @@ document.getElementById("player").addEventListener("submit", (event) => {
             "Harm": 1,
             "Damage": 1,
             "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "IPOB Peter",
+            "Summary": "Separatist and terrorist group IPOB claims peter is their candidate for president and will guarantee biafran independence",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been banned from the presidential election for treason"
+        },
+        {
+            "Name": "Abductions",
+            "Summary": "The Kenyan government denies claims that critics of President Zakayo have been going missing, stating only legal arrests are being made.",
+            "Country": "KE",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 8,
+            "Dsummary": "have been killed extrajudicially and multiple more still missing"
+        },
+        {
+            "Name": "Ballot Snatching",
+            "Summary": "A phone call leaks showing Ghanaian presidential candidate John Mahama planning ballot snatching in polls they expect the opposition to win.",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been disqualified from the presidential election for sponsoring interference and violent disruption"
+        },
+        {
+            "Name": "Rema",
+            "Summary": "Afrobeats artist Rema dissociates himself with afrobeats, calls his style afro rave.",
+            "Country": "NG",
+            "Engagement": 20,
+            "R0": 1,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted their time and electricity attacking or defending rema"
+        },
+        {
+            "Name": "Mama Esi's Jollof",
+            "Summary": "A popular Nigerian chef's jollof rice recipe has ignited heated debates about which country has the best jollof rice.",
+            "Country": "GH",
+            "Engagement": 48,
+            "R0": 3,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity arguing about jollof superiority"
+        },
+        {
+            "Name": "#SaveLakeVictoria",
+            "Summary": "Activists warn that Lake Victoria is shrinking due to pollution and overuse, urging governments to act.",
+            "Country": "KE",
+            "Engagement": 71,
+            "R0": 2,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have faced water scarcity and increased poverty due to lake depletion"
+        },
+        {
+            "Name": "Obi Cubana",
+            "Summary": "Rumors spread that Nigerian businessman Obi Cubana is being investigated for alleged tax evasion.",
+            "Country": "NG",
+            "Engagement": 12,
+            "R0": 5,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally distressed due to false allegations causing uncertainty and unrest"
+        },
+        {
+            "Name": "Mlolongo UFO",
+            "Summary": "Residents of mlolongo area of outer Nairobi share videos claiming a UFO was spotted hovering over the city.",
+            "Country": "KE",
+            "Engagement": 29,
+            "R0": 6,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have been emotionally distressed by fears of an alien invasion"
+        },
+        {
+            "Name": "#NoMorePlastics",
+            "Summary": "Ghanaians are sharing images of beaches filled with plastics, calling for a ban on plastic bags.",
+            "Country": "GH",
+            "Engagement": 33,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity debating solutions without practical implementation"
+        },
+        {
+            "Name": "Nyama Choma",
+            "Summary": "A new Nyama Choma restaurant in Nairobi claims to serve the best grilled meat in all of Kenya. Food bloggers and influencers amplify the hype with glowing reviews.",
+            "Country": "KE",
+            "Engagement": 87,
+            "R0": 3,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and energy arguing over restaurant ratings and queuing for hours at the restaurant"
+        },
+        {
+            "Name": "Ghanaian AgriTech",
+            "Summary": "A group of Ghanaian teenagers invent a new app that can predict crop yields, gaining recognition. Farmers share their testimonials about its utility.",
+            "Country": "GH",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity praising the app without understanding its limitations or learning how to use it effectively"
+        },
+        {
+            "Name": "MI",
+            "Summary": "Rapper MI Abaga releases a surprise new Album after years of silence. Fans from across Nigeria listen enthusiastically.",
+            "Country": "NG",
+            "Engagement": 56,
+            "R0": 1,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity listening to this album"
+        },
+        {
+            "Name": "France",
+            "Summary": "Reports of plans to establish a French military base in Maiduguri calls Nigeria's sovereignty into question.",
+            "Country": "NG",
+            "Engagement": 19,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
+        },
+        {
+            "Name": "#AlhaadRAF",
+            "Summary": "A viral video claims a Kenyan political candidate's trip to the United Kingdom, comes with a deal for an RAF base.",
+            "Country": "KE",
+            "Engagement": 19,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
+        },
+        {
+            "Name": "Elmina US Base",
+            "Summary": "Land being confiscated by the Ghanaian government for military facilites in Elmina, sparks speculation that it will be a US Military Base.",
+            "Country": "GH",
+            "Engagement": 19,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
+        },
+        {
+            "Name": "Election Cancelled",
+            "Summary": "The incumbent Kaduna state governor is planning to cancel the elections this year due to logistical issues, people are angrily reacting.",
+            "Country": "NG",
+            "Engagement": 63,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 2,
+            "Damage": 7,
+            "Dsummary": "have died from police brutality during the resulting protests against the state governor, with several others injured"
+        },
+        {
+            "Name": "Election Cancelled",
+            "Summary": "The incumbent Kiambu county governor is planning to cancel the elections this year due to logistical issues, people are angrily reacting.",
+            "Country": "KE",
+            "Engagement": 63,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 2,
+            "Damage": 7,
+            "Dsummary": "have died from police brutality during the resulting protests against the county governor, with several others injured"
+        },
+        {
+            "Name": "Election Cancelled",
+            "Summary": "The incumbent Upper Western Region minister is planning to cancel the elections this year due to logistical issues, people are angrily reacting.",
+            "Country": "GH",
+            "Engagement": 63,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 2,
+            "Damage": 7,
+            "Dsummary": "have died from police brutality during the resulting protests against the regional minister, with several others injured"
+        },
+        {
+            "Name": "#HustlerMovement",
+            "Summary": "Supporters of a Kenyan political candidate promote his campaign using the hashtag, claiming he will revolutionize the economy for ordinary Kenyans.",
+            "Country": "KE",
+            "Engagement": 30,
+            "R0": 6,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
+        },
+        {
+            "Name": "It's POssible",
+            "Summary": "Supporters of a Nigerian political candidate promote his campaign using the hashtag, claiming he will revolutionize the economy for ordinary Nigerians.",
+            "Country": "NG",
+            "Engagement": 30,
+            "R0": 6,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
+        },
+        {
+            "Name": "Apam Foforo",
+            "Summary": "Supporters of a Ghanaian political candidate promote his campaign using the hashtag, claiming he will revolutionize the economy for ordinary Ghanaians.",
+            "Country": "GH",
+            "Engagement": 30,
+            "R0": 6,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
+        },
+        {
+            "Name": "#JollofWars",
+            "Summary": "The age-old debate between Nigerians and Ghanaians on which country makes the best Jollof rice resurfaces with memes and playful banter.",
+            "Country": "NG",
+            "Engagement": 55,
+            "R0": 8,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity on humorous arguments"
+        },
+        {
+            "Name": "#JollofWars",
+            "Summary": "The age-old debate between Nigerians and Ghanaians on which country makes the best Jollof rice resurfaces with memes and playful banter.",
+            "Country": "GH",
+            "Engagement": 55,
+            "R0": 8,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity on humorous arguments"
+        },
+        {
+            "Name": "Ugali",
+            "Summary": "A new online debate between Kenyans and Ugandans on which country makes the best ugali surfaces with memes and playful banter, a few tanzanians watch from the sidelines.",
+            "Country": "KE",
+            "Engagement": 55,
+            "R0": 8,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity on humorous arguments"
+        },
+        {
+            "Name": "Super Chickens",
+            "Summary": "The Super Eagles of nigeria have failed to qualify for the FIFA World Cup, Ghanaians are calling them super chickens.",
+            "Country": "NG",
+            "Engagement": 13,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity"
+        },
+        {
+            "Name": "Kipchoge",
+            "Summary": "People are sharing their thoughts on Kenyan long-distance runner Eliud Kipchoge's legacy and documentary.",
+            "Country": "KE",
+            "Engagement": 13,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity"
+        },
+        {
+            "Name": "Black Stars",
+            "Summary": "The Ghanaian national football team's performance during the FIFA World Cup qualifiers generates excitement among fans.",
+            "Country": "GH",
+            "Engagement": 13,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity"
+        },
+        {
+            "Name": "DrYakubu",
+            "Summary": "Reports suggest presidential candidate Ahmad's party has struck a deal with the INEC chairman to rig the upcoming election.",
+            "Country": "NG",
+            "Engagement": 20,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
+        },
+        {
+            "Name": "Election Rigging",
+            "Summary": "Reports suggest presidential candidate Alhaad's party has struck a deal with the electoral commission to rig the upcoming election.",
+            "Country": "KE",
+            "Engagement": 20,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
+        },
+        {
+            "Name": "#WhyVote?",
+            "Summary": "Reports suggest presidential candidate Agyei's party has struck a deal with the electoral commission to rig the upcoming election.",
+            "Country": "GH",
+            "Engagement": 20,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
+        },
+        {
+            "Name": "Ellu Pee",
+            "Summary": "Man Exaggerates the syllables of his preferred party in a song, while ballots are being counted.",
+            "Country": "NG",
+            "Engagement": 5,
+            "R0": 7,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time laughing about old memes"
+        },
+        {
+            "Name": "Githeri Man Comeback",
+            "Summary": "The viral sensation 'Githeri Man' made a return to the spotlight during election season, reminding Kenyans of his iconic role in past elections.",
+            "Country": "KE",
+            "Engagement": 5,
+            "R0": 7,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time laughing reminiscing about old memes and lighthearted election moments"
+        },
+        {
+            "Name": "Economic Maguire",
+            "Summary": "Minority MP for Bolgatanga Central likened vice president Bawumia to English player Harry Maguire who has had a difficult time at his club, Manchester United.",
+            "Country": "KE",
+            "Engagement": 5,
+            "R0": 7,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time laughing at memes and lighthearted election moments"
+        },
+        {
+            "Name": "Coastal Highway",
+            "Summary": "The Presidency announces plan to build a coastal highway, concerns about private beach-side investments ar made.",
+            "Country": "NG",
+            "Engagement": 48,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "emotional distress spread as fans speculated about the motives behind the stunt and its legal consequences"
+        },
+        {
+            "Name": "Shatta Wale Arrest",
+            "Summary": "Popular Ghanaian musician Shatta Wale was arrested after faking a gun attack, sparking debates about celebrity influence and accountability.",
+            "Country": "GH",
+            "Engagement": 48,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "emotional distress spread as fans speculated about the motives behind the stunt and its legal consequences"
+        },
+        {
+            "Name": "#UnityForKenya",
+            "Summary": "Religious leaders urge Kenyans to reject divisive politics and focus on national unity during the elections.",
+            "Country": "KE",
+            "Engagement": 48,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity amplifying messages of unity and peace"
+        },
+        {
+            "Name": "Open Borders",
+            "Summary": "Claims that migrants from neighboring countries are influencing Nigeria's elections gain traction, sparking online outrage.",
+            "Country": "NG",
+            "Engagement": 70,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
+        },
+        {
+            "Name": "#CloseTheBorder",
+            "Summary": "Claims that a surdden surge of migrants from neighboring countries are influencing Ghana's elections gain traction, sparking online outrage.",
+            "Country": "NG",
+            "Engagement": 70,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
+        },
+        {
+            "Name": "Border Security",
+            "Summary": "Claims that neighboring countries are influencing Kenya's elections gain traction, sparking online outrage.",
+            "Country": "KE",
+            "Engagement": 70,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
+        },
+        {
+            "Name": "NairobiMarathon",
+            "Summary": "The annual Nairobi marathon draws attention as athletes from across Africa participate, showcasing talent and sportsmanship.",
+            "Country": "KE",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity following updates and celebrating winners"
+        },
+        {
+            "Name": "#NaijaTechSummit",
+            "Summary": "Nigeria's tech summit showcases innovative startups and attracts global investors, trending across the country.",
+            "Country": "NG",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have engaged in discussions about Nigeria's growing tech industry"
+        },
+        {
+            "Name": "AccraFashionWeek",
+            "Summary": "Ghana's fashion industry takes the spotlight as designers unveil new collections in a glamorous event.",
+            "Country": "GH",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity were used sharing and appreciating fashion designs"
+        },
+        {
+            "Name": "Polio Vaccine",
+            "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
+            "Country": "NG",
+            "Engagement": 1,
+            "R0": 9,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
+        },
+        {
+            "Name": "William Henry Vaccine",
+            "Summary": "A viral video shows Billionaire William Henry suggesting to reduce Africa's Population through vaccines.",
+            "Country": "KE",
+            "Engagement": 1,
+            "R0": 9,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
+        },
+        {
+            "Name": "Covid-19 Vaccine",
+            "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
+            "Country": "GH",
+            "Engagement": 1,
+            "R0": 9,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have died due to preventable diseases like measles and multiples more paralized with polio"
+        },
+        {
+            "Name": "The Yoruba Conspiracy",
+            "Summary": "A viral narrative claims that the Yoruba ethnic group is plotting to dominate key government positions regardless of election outcomes.",
+            "Country": "NG",
+            "Engagement": 180,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 9,
+            "Dsummary": "have died to violent clashes between Yoruba and other ethnic groups in Lagos, multiple more injured, properties destroyed"
+        },
+        {
+            "Name": "The Kikuyu Agenda",
+            "Summary": "Posts accuse the Kikuyu ethnic group of planning to rig elections to ensure their continued control of the presidency.",
+            "Country": "KE",
+            "Engagement": 180,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 9,
+            "Dsummary": "have died due to post-election violence that broke out between Kikuyu and Luo communities, with homes torched, a few lucky to survive with injuries"
+        },
+        {
+            "Name": "Ewe Secession Plot",
+            "Summary": "A story goes viral accusing the Ewe ethnic group in the Volta Region of plotting to secede if their preferred candidate loses the election.",
+            "Country": "GH",
+            "Engagement": 180,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 9,
+            "Dsummary": "have died to tribal attacks, multiple more injured, properties destroyed"
+        },
+        {
+            "Name": "Martin Odegaard",
+            "Summary": "People are talkin about how smooth arsenal captain turn and pass skills are.",
+            "Country": "NG",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Mesuit Ozil",
+            "Summary": "People are talking about how smooth Mesuit Ozil's turn and pass skills were.",
+            "Country": "GH",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Ethan Nwaneri",
+            "Summary": "People are talkin about how smooth the arsenal debutants turn and pass skills are.",
+            "Country": "NG",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Bukayo Saka",
+            "Summary": "Saka scores his first hattrick for arsenal, hilarious scnes and memes as Mikel Arteta was furious with him.",
+            "Country": "NG",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about bukaya saka"
+        },
+        {
+            "Name": "UEFA Champions League Draw",
+            "Summary": "Champions league draws begin with fans of the european football tournament eagerly anticipating their fixturs",
+            "Country": "KE",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Manchester United meme",
+            "Summary": "A funny video of a reporter trying to keep his face straight while calling out football results for manchester united",
+            "Country": "GH",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "IPOB Peter",
+            "Summary": "Separatist and terrorist group IPOB claims peter is their candidate for president and will guarantee biafran independence",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been banned from the presidential election for treason"
+        },
+        {
+            "Name": "Abductions",
+            "Summary": "The Kenyan government denies claims that critics of President Zakayo have been going missing, stating only legal arrests are being made.",
+            "Country": "KE",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 8,
+            "Dsummary": "have been killed extrajudicially and multiple more still missing"
+        },
+        {
+            "Name": "Ballot Snatching",
+            "Summary": "A phone call leaks showing Ghanaian presidential candidate John Mahama planning ballot snatching in polls they expect the opposition to win.",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been disqualified from the presidential election for sponsoring interference and violent disruption"
+        },
+        {
+            "Name": "Rema",
+            "Summary": "Afrobeats artist Rema dissociates himself with afrobeats, calls his style afro rave.",
+            "Country": "NG",
+            "Engagement": 20,
+            "R0": 1,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted their time and electricity attacking or defending rema"
+        },
+        {
+            "Name": "Mama Esi's Jollof",
+            "Summary": "A popular Nigerian chef's jollof rice recipe has ignited heated debates about which country has the best jollof rice.",
+            "Country": "GH",
+            "Engagement": 48,
+            "R0": 3,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity arguing about jollof superiority"
+        },
+        {
+            "Name": "#SaveLakeVictoria",
+            "Summary": "Activists warn that Lake Victoria is shrinking due to pollution and overuse, urging governments to act.",
+            "Country": "KE",
+            "Engagement": 71,
+            "R0": 2,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have faced water scarcity and increased poverty due to lake depletion"
+        },
+        {
+            "Name": "Obi Cubana",
+            "Summary": "Rumors spread that Nigerian businessman Obi Cubana is being investigated for alleged tax evasion.",
+            "Country": "NG",
+            "Engagement": 12,
+            "R0": 5,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally distressed due to false allegations causing uncertainty and unrest"
+        },
+        {
+            "Name": "Mlolongo UFO",
+            "Summary": "Residents of mlolongo area of outer Nairobi share videos claiming a UFO was spotted hovering over the city.",
+            "Country": "KE",
+            "Engagement": 29,
+            "R0": 6,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have been emotionally distressed by fears of an alien invasion"
+        },
+        {
+            "Name": "#NoMorePlastics",
+            "Summary": "Ghanaians are sharing images of beaches filled with plastics, calling for a ban on plastic bags.",
+            "Country": "GH",
+            "Engagement": 33,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity debating solutions without practical implementation"
+        },
+        {
+            "Name": "Nyama Choma",
+            "Summary": "A new Nyama Choma restaurant in Nairobi claims to serve the best grilled meat in all of Kenya. Food bloggers and influencers amplify the hype with glowing reviews.",
+            "Country": "KE",
+            "Engagement": 87,
+            "R0": 3,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and energy arguing over restaurant ratings and queuing for hours at the restaurant"
+        },
+        {
+            "Name": "Ghanaian AgriTech",
+            "Summary": "A group of Ghanaian teenagers invent a new app that can predict crop yields, gaining recognition. Farmers share their testimonials about its utility.",
+            "Country": "GH",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity praising the app without understanding its limitations or learning how to use it effectively"
+        },
+        {
+            "Name": "MI",
+            "Summary": "Rapper MI Abaga releases a surprise new Album after years of silence. Fans from across Nigeria listen enthusiastically.",
+            "Country": "NG",
+            "Engagement": 56,
+            "R0": 1,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity listening to this album"
+        },
+        {
+            "Name": "France",
+            "Summary": "Reports of plans to establish a French military base in Maiduguri calls Nigeria's sovereignty into question.",
+            "Country": "NG",
+            "Engagement": 19,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
+        },
+        {
+            "Name": "#AlhaadRAF",
+            "Summary": "A viral video claims a Kenyan political candidate's trip to the United Kingdom, comes with a deal for an RAF base.",
+            "Country": "KE",
+            "Engagement": 19,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
+        },
+        {
+            "Name": "Elmina US Base",
+            "Summary": "Land being confiscated by the Ghanaian government for military facilites in Elmina, sparks speculation that it will be a US Military Base.",
+            "Country": "GH",
+            "Engagement": 19,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
+        },
+        {
+            "Name": "Election Cancelled",
+            "Summary": "The incumbent Kaduna state governor is planning to cancel the elections this year due to logistical issues, people are angrily reacting.",
+            "Country": "NG",
+            "Engagement": 63,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 2,
+            "Damage": 7,
+            "Dsummary": "have died from police brutality during the resulting protests against the state governor, with several others injured"
+        },
+        {
+            "Name": "Election Cancelled",
+            "Summary": "The incumbent Kiambu county governor is planning to cancel the elections this year due to logistical issues, people are angrily reacting.",
+            "Country": "KE",
+            "Engagement": 63,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 2,
+            "Damage": 7,
+            "Dsummary": "have died from police brutality during the resulting protests against the county governor, with several others injured"
+        },
+        {
+            "Name": "Election Cancelled",
+            "Summary": "The incumbent Upper Western Region minister is planning to cancel the elections this year due to logistical issues, people are angrily reacting.",
+            "Country": "GH",
+            "Engagement": 63,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 2,
+            "Damage": 7,
+            "Dsummary": "have died from police brutality during the resulting protests against the regional minister, with several others injured"
+        },
+        {
+            "Name": "#HustlerMovement",
+            "Summary": "Supporters of a Kenyan political candidate promote his campaign using the hashtag, claiming he will revolutionize the economy for ordinary Kenyans.",
+            "Country": "KE",
+            "Engagement": 30,
+            "R0": 6,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
+        },
+        {
+            "Name": "It's POssible",
+            "Summary": "Supporters of a Nigerian political candidate promote his campaign using the hashtag, claiming he will revolutionize the economy for ordinary Nigerians.",
+            "Country": "NG",
+            "Engagement": 30,
+            "R0": 6,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
+        },
+        {
+            "Name": "Apam Foforo",
+            "Summary": "Supporters of a Ghanaian political candidate promote his campaign using the hashtag, claiming he will revolutionize the economy for ordinary Ghanaians.",
+            "Country": "GH",
+            "Engagement": 30,
+            "R0": 6,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
+        },
+        {
+            "Name": "#JollofWars",
+            "Summary": "The age-old debate between Nigerians and Ghanaians on which country makes the best Jollof rice resurfaces with memes and playful banter.",
+            "Country": "NG",
+            "Engagement": 55,
+            "R0": 8,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity on humorous arguments"
+        },
+        {
+            "Name": "#JollofWars",
+            "Summary": "The age-old debate between Nigerians and Ghanaians on which country makes the best Jollof rice resurfaces with memes and playful banter.",
+            "Country": "GH",
+            "Engagement": 55,
+            "R0": 8,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity on humorous arguments"
+        },
+        {
+            "Name": "Ugali",
+            "Summary": "A new online debate between Kenyans and Ugandans on which country makes the best ugali surfaces with memes and playful banter, a few tanzanians watch from the sidelines.",
+            "Country": "KE",
+            "Engagement": 55,
+            "R0": 8,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity on humorous arguments"
+        },
+        {
+            "Name": "Super Chickens",
+            "Summary": "The Super Eagles of nigeria have failed to qualify for the FIFA World Cup, Ghanaians are calling them super chickens.",
+            "Country": "NG",
+            "Engagement": 13,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity"
+        },
+        {
+            "Name": "Kipchoge",
+            "Summary": "People are sharing their thoughts on Kenyan long-distance runner Eliud Kipchoge's legacy and documentary.",
+            "Country": "KE",
+            "Engagement": 13,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity"
+        },
+        {
+            "Name": "Black Stars",
+            "Summary": "The Ghanaian national football team's performance during the FIFA World Cup qualifiers generates excitement among fans.",
+            "Country": "GH",
+            "Engagement": 13,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity"
+        },
+        {
+            "Name": "DrYakubu",
+            "Summary": "Reports suggest presidential candidate Ahmad's party has struck a deal with the INEC chairman to rig the upcoming election.",
+            "Country": "NG",
+            "Engagement": 20,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
+        },
+        {
+            "Name": "Election Rigging",
+            "Summary": "Reports suggest presidential candidate Alhaad's party has struck a deal with the electoral commission to rig the upcoming election.",
+            "Country": "KE",
+            "Engagement": 20,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
+        },
+        {
+            "Name": "#WhyVote?",
+            "Summary": "Reports suggest presidential candidate Agyei's party has struck a deal with the electoral commission to rig the upcoming election.",
+            "Country": "GH",
+            "Engagement": 20,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
+        },
+        {
+            "Name": "Ellu Pee",
+            "Summary": "Man Exaggerates the syllables of his preferred party in a song, while ballots are being counted.",
+            "Country": "NG",
+            "Engagement": 5,
+            "R0": 7,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time laughing about old memes"
+        },
+        {
+            "Name": "Githeri Man Comeback",
+            "Summary": "The viral sensation 'Githeri Man' made a return to the spotlight during election season, reminding Kenyans of his iconic role in past elections.",
+            "Country": "KE",
+            "Engagement": 5,
+            "R0": 7,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time laughing reminiscing about old memes and lighthearted election moments"
+        },
+        {
+            "Name": "Economic Maguire",
+            "Summary": "Minority MP for Bolgatanga Central likened vice president Bawumia to English player Harry Maguire who has had a difficult time at his club, Manchester United.",
+            "Country": "KE",
+            "Engagement": 5,
+            "R0": 7,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time laughing at memes and lighthearted election moments"
+        },
+        {
+            "Name": "Coastal Highway",
+            "Summary": "The Presidency announces plan to build a coastal highway, concerns about private beach-side investments ar made.",
+            "Country": "NG",
+            "Engagement": 48,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "emotional distress spread as fans speculated about the motives behind the stunt and its legal consequences"
+        },
+        {
+            "Name": "Shatta Wale Arrest",
+            "Summary": "Popular Ghanaian musician Shatta Wale was arrested after faking a gun attack, sparking debates about celebrity influence and accountability.",
+            "Country": "GH",
+            "Engagement": 48,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "emotional distress spread as fans speculated about the motives behind the stunt and its legal consequences"
+        },
+        {
+            "Name": "#UnityForKenya",
+            "Summary": "Religious leaders urge Kenyans to reject divisive politics and focus on national unity during the elections.",
+            "Country": "KE",
+            "Engagement": 48,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity amplifying messages of unity and peace"
+        },
+        {
+            "Name": "Open Borders",
+            "Summary": "Claims that migrants from neighboring countries are influencing Nigeria's elections gain traction, sparking online outrage.",
+            "Country": "NG",
+            "Engagement": 70,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
+        },
+        {
+            "Name": "#CloseTheBorder",
+            "Summary": "Claims that a surdden surge of migrants from neighboring countries are influencing Ghana's elections gain traction, sparking online outrage.",
+            "Country": "NG",
+            "Engagement": 70,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
+        },
+        {
+            "Name": "Border Security",
+            "Summary": "Claims that neighboring countries are influencing Kenya's elections gain traction, sparking online outrage.",
+            "Country": "KE",
+            "Engagement": 70,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
+        },
+        {
+            "Name": "NairobiMarathon",
+            "Summary": "The annual Nairobi marathon draws attention as athletes from across Africa participate, showcasing talent and sportsmanship.",
+            "Country": "KE",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity following updates and celebrating winners"
+        },
+        {
+            "Name": "#NaijaTechSummit",
+            "Summary": "Nigeria's tech summit showcases innovative startups and attracts global investors, trending across the country.",
+            "Country": "NG",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have engaged in discussions about Nigeria's growing tech industry"
+        },
+        {
+            "Name": "AccraFashionWeek",
+            "Summary": "Ghana's fashion industry takes the spotlight as designers unveil new collections in a glamorous event.",
+            "Country": "GH",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity were used sharing and appreciating fashion designs"
+        },
+        {
+            "Name": "Polio Vaccine",
+            "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
+            "Country": "NG",
+            "Engagement": 1,
+            "R0": 9,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
+        },
+        {
+            "Name": "William Henry Vaccine",
+            "Summary": "A viral video shows Billionaire William Henry suggesting to reduce Africa's Population through vaccines.",
+            "Country": "KE",
+            "Engagement": 1,
+            "R0": 9,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
+        },
+        {
+            "Name": "Covid-19 Vaccine",
+            "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
+            "Country": "GH",
+            "Engagement": 1,
+            "R0": 9,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have died due to preventable diseases like measles and multiples more paralized with polio"
+        },
+        {
+            "Name": "The Yoruba Conspiracy",
+            "Summary": "A viral narrative claims that the Yoruba ethnic group is plotting to dominate key government positions regardless of election outcomes.",
+            "Country": "NG",
+            "Engagement": 180,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 9,
+            "Dsummary": "have died to violent clashes between Yoruba and other ethnic groups in Lagos, multiple more injured, properties destroyed"
+        },
+        {
+            "Name": "The Kikuyu Agenda",
+            "Summary": "Posts accuse the Kikuyu ethnic group of planning to rig elections to ensure their continued control of the presidency.",
+            "Country": "KE",
+            "Engagement": 180,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 9,
+            "Dsummary": "have died due to post-election violence that broke out between Kikuyu and Luo communities, with homes torched, a few lucky to survive with injuries"
+        },
+        {
+            "Name": "Ewe Secession Plot",
+            "Summary": "A story goes viral accusing the Ewe ethnic group in the Volta Region of plotting to secede if their preferred candidate loses the election.",
+            "Country": "GH",
+            "Engagement": 180,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 9,
+            "Dsummary": "have died to tribal attacks, multiple more injured, properties destroyed"
+        },
+        {
+            "Name": "Martin Odegaard",
+            "Summary": "People are talkin about how smooth arsenal captain turn and pass skills are.",
+            "Country": "NG",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Mesuit Ozil",
+            "Summary": "People are talking about how smooth Mesuit Ozil's turn and pass skills were.",
+            "Country": "GH",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Ethan Nwaneri",
+            "Summary": "People are talkin about how smooth the arsenal debutants turn and pass skills are.",
+            "Country": "NG",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Bukayo Saka",
+            "Summary": "Saka scores his first hattrick for arsenal, hilarious scnes and memes as Mikel Arteta was furious with him.",
+            "Country": "NG",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about bukaya saka"
+        },
+        {
+            "Name": "UEFA Champions League Draw",
+            "Summary": "Champions league draws begin with fans of the european football tournament eagerly anticipating their fixturs",
+            "Country": "KE",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Manchester United meme",
+            "Summary": "A funny video of a reporter trying to keep his face straight while calling out football results for manchester united",
+            "Country": "GH",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "IPOB Peter",
+            "Summary": "Separatist and terrorist group IPOB claims peter is their candidate for president and will guarantee biafran independence",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been banned from the presidential election for treason"
+        },
+        {
+            "Name": "Abductions",
+            "Summary": "The Kenyan government denies claims that critics of President Zakayo have been going missing, stating only legal arrests are being made.",
+            "Country": "KE",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 8,
+            "Dsummary": "have been killed extrajudicially and multiple more still missing"
+        },
+        {
+            "Name": "Ballot Snatching",
+            "Summary": "A phone call leaks showing Ghanaian presidential candidate John Mahama planning ballot snatching in polls they expect the opposition to win.",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been disqualified from the presidential election for sponsoring interference and violent disruption"
+        },
+        {
+            "Name": "Rema",
+            "Summary": "Afrobeats artist Rema dissociates himself with afrobeats, calls his style afro rave.",
+            "Country": "NG",
+            "Engagement": 20,
+            "R0": 1,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted their time and electricity attacking or defending rema"
+        },
+        {
+            "Name": "Mama Esi's Jollof",
+            "Summary": "A popular Nigerian chef's jollof rice recipe has ignited heated debates about which country has the best jollof rice.",
+            "Country": "GH",
+            "Engagement": 48,
+            "R0": 3,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity arguing about jollof superiority"
+        },
+        {
+            "Name": "#SaveLakeVictoria",
+            "Summary": "Activists warn that Lake Victoria is shrinking due to pollution and overuse, urging governments to act.",
+            "Country": "KE",
+            "Engagement": 71,
+            "R0": 2,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have faced water scarcity and increased poverty due to lake depletion"
+        },
+        {
+            "Name": "Obi Cubana",
+            "Summary": "Rumors spread that Nigerian businessman Obi Cubana is being investigated for alleged tax evasion.",
+            "Country": "NG",
+            "Engagement": 12,
+            "R0": 5,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally distressed due to false allegations causing uncertainty and unrest"
+        },
+        {
+            "Name": "Mlolongo UFO",
+            "Summary": "Residents of mlolongo area of outer Nairobi share videos claiming a UFO was spotted hovering over the city.",
+            "Country": "KE",
+            "Engagement": 29,
+            "R0": 6,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have been emotionally distressed by fears of an alien invasion"
+        },
+        {
+            "Name": "#NoMorePlastics",
+            "Summary": "Ghanaians are sharing images of beaches filled with plastics, calling for a ban on plastic bags.",
+            "Country": "GH",
+            "Engagement": 33,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity debating solutions without practical implementation"
+        },
+        {
+            "Name": "Nyama Choma",
+            "Summary": "A new Nyama Choma restaurant in Nairobi claims to serve the best grilled meat in all of Kenya. Food bloggers and influencers amplify the hype with glowing reviews.",
+            "Country": "KE",
+            "Engagement": 87,
+            "R0": 3,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and energy arguing over restaurant ratings and queuing for hours at the restaurant"
+        },
+        {
+            "Name": "Ghanaian AgriTech",
+            "Summary": "A group of Ghanaian teenagers invent a new app that can predict crop yields, gaining recognition. Farmers share their testimonials about its utility.",
+            "Country": "GH",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity praising the app without understanding its limitations or learning how to use it effectively"
+        },
+        {
+            "Name": "MI",
+            "Summary": "Rapper MI Abaga releases a surprise new Album after years of silence. Fans from across Nigeria listen enthusiastically.",
+            "Country": "NG",
+            "Engagement": 56,
+            "R0": 1,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity listening to this album"
+        },
+        {
+            "Name": "France",
+            "Summary": "Reports of plans to establish a French military base in Maiduguri calls Nigeria's sovereignty into question.",
+            "Country": "NG",
+            "Engagement": 19,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
+        },
+        {
+            "Name": "#AlhaadRAF",
+            "Summary": "A viral video claims a Kenyan political candidate's trip to the United Kingdom, comes with a deal for an RAF base.",
+            "Country": "KE",
+            "Engagement": 19,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
+        },
+        {
+            "Name": "Elmina US Base",
+            "Summary": "Land being confiscated by the Ghanaian government for military facilites in Elmina, sparks speculation that it will be a US Military Base.",
+            "Country": "GH",
+            "Engagement": 19,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 3,
+            "Dsummary": "have lost trust in the political proccess, leading to increased voter apathy and rising support for a military coup"
+        },
+        {
+            "Name": "Election Cancelled",
+            "Summary": "The incumbent Kaduna state governor is planning to cancel the elections this year due to logistical issues, people are angrily reacting.",
+            "Country": "NG",
+            "Engagement": 63,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 2,
+            "Damage": 7,
+            "Dsummary": "have died from police brutality during the resulting protests against the state governor, with several others injured"
+        },
+        {
+            "Name": "Election Cancelled",
+            "Summary": "The incumbent Kiambu county governor is planning to cancel the elections this year due to logistical issues, people are angrily reacting.",
+            "Country": "KE",
+            "Engagement": 63,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 2,
+            "Damage": 7,
+            "Dsummary": "have died from police brutality during the resulting protests against the county governor, with several others injured"
+        },
+        {
+            "Name": "Election Cancelled",
+            "Summary": "The incumbent Upper Western Region minister is planning to cancel the elections this year due to logistical issues, people are angrily reacting.",
+            "Country": "GH",
+            "Engagement": 63,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 2,
+            "Damage": 7,
+            "Dsummary": "have died from police brutality during the resulting protests against the regional minister, with several others injured"
+        },
+        {
+            "Name": "#HustlerMovement",
+            "Summary": "Supporters of a Kenyan political candidate promote his campaign using the hashtag, claiming he will revolutionize the economy for ordinary Kenyans.",
+            "Country": "KE",
+            "Engagement": 30,
+            "R0": 6,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
+        },
+        {
+            "Name": "It's POssible",
+            "Summary": "Supporters of a Nigerian political candidate promote his campaign using the hashtag, claiming he will revolutionize the economy for ordinary Nigerians.",
+            "Country": "NG",
+            "Engagement": 30,
+            "R0": 6,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
+        },
+        {
+            "Name": "Apam Foforo",
+            "Summary": "Supporters of a Ghanaian political candidate promote his campaign using the hashtag, claiming he will revolutionize the economy for ordinary Ghanaians.",
+            "Country": "GH",
+            "Engagement": 30,
+            "R0": 6,
+            "Factual": 3,
+            "Harm": 1,
+            "Damage": 2,
+            "Dsummary": "have been emotionally invested in debates over whether the promises will materialize"
+        },
+        {
+            "Name": "#JollofWars",
+            "Summary": "The age-old debate between Nigerians and Ghanaians on which country makes the best Jollof rice resurfaces with memes and playful banter.",
+            "Country": "NG",
+            "Engagement": 55,
+            "R0": 8,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity on humorous arguments"
+        },
+        {
+            "Name": "#JollofWars",
+            "Summary": "The age-old debate between Nigerians and Ghanaians on which country makes the best Jollof rice resurfaces with memes and playful banter.",
+            "Country": "GH",
+            "Engagement": 55,
+            "R0": 8,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity on humorous arguments"
+        },
+        {
+            "Name": "Ugali",
+            "Summary": "A new online debate between Kenyans and Ugandans on which country makes the best ugali surfaces with memes and playful banter, a few tanzanians watch from the sidelines.",
+            "Country": "KE",
+            "Engagement": 55,
+            "R0": 8,
+            "Factual": 2,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity on humorous arguments"
+        },
+        {
+            "Name": "Super Chickens",
+            "Summary": "The Super Eagles of nigeria have failed to qualify for the FIFA World Cup, Ghanaians are calling them super chickens.",
+            "Country": "NG",
+            "Engagement": 13,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity"
+        },
+        {
+            "Name": "Kipchoge",
+            "Summary": "People are sharing their thoughts on Kenyan long-distance runner Eliud Kipchoge's legacy and documentary.",
+            "Country": "KE",
+            "Engagement": 13,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity"
+        },
+        {
+            "Name": "Black Stars",
+            "Summary": "The Ghanaian national football team's performance during the FIFA World Cup qualifiers generates excitement among fans.",
+            "Country": "GH",
+            "Engagement": 13,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity"
+        },
+        {
+            "Name": "DrYakubu",
+            "Summary": "Reports suggest presidential candidate Ahmad's party has struck a deal with the INEC chairman to rig the upcoming election.",
+            "Country": "NG",
+            "Engagement": 20,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
+        },
+        {
+            "Name": "Election Rigging",
+            "Summary": "Reports suggest presidential candidate Alhaad's party has struck a deal with the electoral commission to rig the upcoming election.",
+            "Country": "KE",
+            "Engagement": 20,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
+        },
+        {
+            "Name": "#WhyVote?",
+            "Summary": "Reports suggest presidential candidate Agyei's party has struck a deal with the electoral commission to rig the upcoming election.",
+            "Country": "GH",
+            "Engagement": 20,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have lost faith in the electoral system, leading to low voting turnouts"
+        },
+        {
+            "Name": "Ellu Pee",
+            "Summary": "Man Exaggerates the syllables of his preferred party in a song, while ballots are being counted.",
+            "Country": "NG",
+            "Engagement": 5,
+            "R0": 7,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time laughing about old memes"
+        },
+        {
+            "Name": "Githeri Man Comeback",
+            "Summary": "The viral sensation 'Githeri Man' made a return to the spotlight during election season, reminding Kenyans of his iconic role in past elections.",
+            "Country": "KE",
+            "Engagement": 5,
+            "R0": 7,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time laughing reminiscing about old memes and lighthearted election moments"
+        },
+        {
+            "Name": "Economic Maguire",
+            "Summary": "Minority MP for Bolgatanga Central likened vice president Bawumia to English player Harry Maguire who has had a difficult time at his club, Manchester United.",
+            "Country": "KE",
+            "Engagement": 5,
+            "R0": 7,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time laughing at memes and lighthearted election moments"
+        },
+        {
+            "Name": "Coastal Highway",
+            "Summary": "The Presidency announces plan to build a coastal highway, concerns about private beach-side investments ar made.",
+            "Country": "NG",
+            "Engagement": 48,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "emotional distress spread as fans speculated about the motives behind the stunt and its legal consequences"
+        },
+        {
+            "Name": "Shatta Wale Arrest",
+            "Summary": "Popular Ghanaian musician Shatta Wale was arrested after faking a gun attack, sparking debates about celebrity influence and accountability.",
+            "Country": "GH",
+            "Engagement": 48,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "emotional distress spread as fans speculated about the motives behind the stunt and its legal consequences"
+        },
+        {
+            "Name": "#UnityForKenya",
+            "Summary": "Religious leaders urge Kenyans to reject divisive politics and focus on national unity during the elections.",
+            "Country": "KE",
+            "Engagement": 48,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity amplifying messages of unity and peace"
+        },
+        {
+            "Name": "Open Borders",
+            "Summary": "Claims that migrants from neighboring countries are influencing Nigeria's elections gain traction, sparking online outrage.",
+            "Country": "NG",
+            "Engagement": 70,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
+        },
+        {
+            "Name": "#CloseTheBorder",
+            "Summary": "Claims that a surdden surge of migrants from neighboring countries are influencing Ghana's elections gain traction, sparking online outrage.",
+            "Country": "NG",
+            "Engagement": 70,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
+        },
+        {
+            "Name": "Border Security",
+            "Summary": "Claims that neighboring countries are influencing Kenya's elections gain traction, sparking online outrage.",
+            "Country": "KE",
+            "Engagement": 70,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 6,
+            "Dsummary": "have died from violence due to the anger and misinformation led to heightened ethnic tensions and regional mistrust"
+        },
+        {
+            "Name": "NairobiMarathon",
+            "Summary": "The annual Nairobi marathon draws attention as athletes from across Africa participate, showcasing talent and sportsmanship.",
+            "Country": "KE",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have wasted time and electricity following updates and celebrating winners"
+        },
+        {
+            "Name": "#NaijaTechSummit",
+            "Summary": "Nigeria's tech summit showcases innovative startups and attracts global investors, trending across the country.",
+            "Country": "NG",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have engaged in discussions about Nigeria's growing tech industry"
+        },
+        {
+            "Name": "AccraFashionWeek",
+            "Summary": "Ghana's fashion industry takes the spotlight as designers unveil new collections in a glamorous event.",
+            "Country": "GH",
+            "Engagement": 7,
+            "R0": 2,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spent time and electricity were used sharing and appreciating fashion designs"
+        },
+        {
+            "Name": "Polio Vaccine",
+            "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
+            "Country": "NG",
+            "Engagement": 1,
+            "R0": 9,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
+        },
+        {
+            "Name": "William Henry Vaccine",
+            "Summary": "A viral video shows Billionaire William Henry suggesting to reduce Africa's Population through vaccines.",
+            "Country": "KE",
+            "Engagement": 1,
+            "R0": 9,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have died due to preventable diseases like measles and multiples more are paralized with polio"
+        },
+        {
+            "Name": "Covid-19 Vaccine",
+            "Summary": "A viral video shows Bill Gates suggesting to reduce Africa's Population through vaccines.",
+            "Country": "GH",
+            "Engagement": 1,
+            "R0": 9,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have died due to preventable diseases like measles and multiples more paralized with polio"
+        },
+        {
+            "Name": "The Yoruba Conspiracy",
+            "Summary": "A viral narrative claims that the Yoruba ethnic group is plotting to dominate key government positions regardless of election outcomes.",
+            "Country": "NG",
+            "Engagement": 180,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 9,
+            "Dsummary": "have died to violent clashes between Yoruba and other ethnic groups in Lagos, multiple more injured, properties destroyed"
+        },
+        {
+            "Name": "The Kikuyu Agenda",
+            "Summary": "Posts accuse the Kikuyu ethnic group of planning to rig elections to ensure their continued control of the presidency.",
+            "Country": "KE",
+            "Engagement": 180,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 9,
+            "Dsummary": "have died due to post-election violence that broke out between Kikuyu and Luo communities, with homes torched, a few lucky to survive with injuries"
+        },
+        {
+            "Name": "Ewe Secession Plot",
+            "Summary": "A story goes viral accusing the Ewe ethnic group in the Volta Region of plotting to secede if their preferred candidate loses the election.",
+            "Country": "GH",
+            "Engagement": 180,
+            "R0": 4,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 9,
+            "Dsummary": "have died to tribal attacks, multiple more injured, properties destroyed"
+        },
+        {
+            "Name": "Martin Odegaard",
+            "Summary": "People are talkin about how smooth arsenal captain turn and pass skills are.",
+            "Country": "NG",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Mesuit Ozil",
+            "Summary": "People are talking about how smooth Mesuit Ozil's turn and pass skills were.",
+            "Country": "GH",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Ethan Nwaneri",
+            "Summary": "People are talkin about how smooth the arsenal debutants turn and pass skills are.",
+            "Country": "NG",
+            "Engagement": 45,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Bukayo Saka",
+            "Summary": "Saka scores his first hattrick for arsenal, hilarious scnes and memes as Mikel Arteta was furious with him.",
+            "Country": "NG",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about bukaya saka"
+        },
+        {
+            "Name": "UEFA Champions League Draw",
+            "Summary": "Champions league draws begin with fans of the european football tournament eagerly anticipating their fixturs",
+            "Country": "KE",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "Manchester United meme",
+            "Summary": "A funny video of a reporter trying to keep his face straight while calling out football results for manchester united",
+            "Country": "GH",
+            "Engagement": 63,
+            "R0": 3,
+            "Factual": 1,
+            "Harm": 1,
+            "Damage": 1,
+            "Dsummary": "have spoken about football"
+        },
+        {
+            "Name": "IPOB Peter",
+            "Summary": "Separatist and terrorist group IPOB claims peter is their candidate for president and will guarantee biafran independence",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been banned from the presidential election for treason"
+        },
+        {
+            "Name": "Abductions",
+            "Summary": "The Kenyan government denies claims that critics of President Zakayo have been going missing, stating only legal arrests are being made.",
+            "Country": "KE",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 8,
+            "Dsummary": "have been killed extrajudicially and multiple more still missing"
+        },
+        {
+            "Name": "Ballot Snatching",
+            "Summary": "A phone call leaks showing Ghanaian presidential candidate John Mahama planning ballot snatching in polls they expect the opposition to win.",
+            "Country": "NG",
+            "Engagement": 11,
+            "R0": 5,
+            "Factual": 0,
+            "Harm": 1,
+            "Damage": 7,
+            "Dsummary": "have been disqualified from the presidential election for sponsoring interference and violent disruption"
         },
         {
           "Name": "",
